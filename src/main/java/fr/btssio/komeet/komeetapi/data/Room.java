@@ -16,10 +16,8 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinTable(name = "company", joinColumns = @JoinColumn(name = "email"))
-    private Company company;
+    @Column(name = "company", insertable = false, updatable = false)
+    private String company;
 
     @Column(name = "name")
     private String name;
@@ -60,7 +58,8 @@ public class Room {
     @Column(name = "dateCreated")
     private String dateCreated;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany
+    @JoinColumn(name = "room")
     private List<Image> images;
 
     @ManyToMany

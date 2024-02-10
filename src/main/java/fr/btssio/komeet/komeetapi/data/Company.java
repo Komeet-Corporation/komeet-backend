@@ -20,6 +20,7 @@ public class Company {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany
+    @JoinColumn(name = "company")
     private List<Room> rooms;
 }

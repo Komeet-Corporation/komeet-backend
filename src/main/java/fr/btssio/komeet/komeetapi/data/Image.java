@@ -1,6 +1,5 @@
 package fr.btssio.komeet.komeetapi.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,8 +16,6 @@ public class Image {
     @Column(name = "path")
     private String path;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinTable(name = "room", joinColumns = @JoinColumn(name = "id"))
-    private Room room;
+    @Column(name = "id", insertable = false, updatable = false)
+    private Long room;
 }
