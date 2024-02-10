@@ -9,5 +9,4 @@ class KomeetApiApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
