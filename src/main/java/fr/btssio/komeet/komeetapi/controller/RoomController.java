@@ -1,6 +1,6 @@
 package fr.btssio.komeet.komeetapi.controller;
 
-import fr.btssio.komeet.komeetapi.dto.RoomDto;
+import fr.btssio.komeet.komeetapi.domain.dto.RoomDto;
 import fr.btssio.komeet.komeetapi.service.RoomService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

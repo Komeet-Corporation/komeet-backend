@@ -1,7 +1,8 @@
 package fr.btssio.komeet.komeetapi.service;
 
-import fr.btssio.komeet.komeetapi.data.Company;
-import fr.btssio.komeet.komeetapi.dto.CompanyDto;
+import fr.btssio.komeet.komeetapi.domain.data.Company;
+import fr.btssio.komeet.komeetapi.domain.dto.CompanyDto;
+import fr.btssio.komeet.komeetapi.domain.mapper.CompanyMapper;
 import fr.btssio.komeet.komeetapi.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +10,15 @@ import org.springframework.stereotype.Service;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyMapper companyMapper;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
+        this.companyMapper = companyMapper;
     }
 
     public CompanyDto findByEmail(String email) {
         Company company = this.companyRepository.findById(email).orElse(null);
-        return company != null ? CompanyDto.bindFromCompany(company) : null;
+        return company != null ? companyMapper.toDto(company) : null;
     }
 }

@@ -1,6 +1,6 @@
 package fr.btssio.komeet.komeetapi.repository;
 
-import fr.btssio.komeet.komeetapi.data.User;
+import fr.btssio.komeet.komeetapi.domain.data.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

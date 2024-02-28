@@ -1,4 +1,4 @@
-package fr.btssio.komeet.komeetapi.data;
+package fr.btssio.komeet.komeetapi.domain.data;
 
 import jakarta.persistence.*;
 import lombok.Data;
