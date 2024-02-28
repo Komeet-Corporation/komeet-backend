@@ -13,7 +13,7 @@ public class ImageMapper {
 
     public ImageDto toDto(@NotNull Image image) {
         ImageDto imageDto = new ImageDto();
-        imageDto.setId(image.getId());
+        imageDto.setUuid(image.getUuid());
         imageDto.setPath(image.getPath());
         return imageDto;
     }

@@ -18,7 +18,7 @@ public class CompanyMapper {
     }
 
     public CompanyDto toDto(@NotNull Company company) {
-        CompanyDto companyDto = new CompanyDto(company.getEmail(), company.getName(), company.getPhone());
+        CompanyDto companyDto = new CompanyDto(company.getEmail(), company.getUuid(), company.getName(), company.getPhone());
         List<RoomDto> rooms = company.getRooms().stream().map(roomMapper::toDto).toList();
         companyDto.setRooms(rooms);
         return companyDto;

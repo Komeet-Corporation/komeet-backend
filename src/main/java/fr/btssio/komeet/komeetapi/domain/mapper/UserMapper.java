@@ -20,6 +20,7 @@ public class UserMapper {
     public UserDto toDto(@NotNull User user) {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
+        userDto.setUuid(user.getUuid());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         List<RoomDto> favorites = user.getFavorites().stream().map(roomMapper::toDto).toList();

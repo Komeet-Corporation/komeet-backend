@@ -2,9 +2,11 @@ package fr.btssio.komeet.komeetapi.domain.dto;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ImageDto {
 
-    private Long id;
+    private UUID uuid;
     private String path;
 }

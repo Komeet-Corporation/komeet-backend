@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -13,6 +14,10 @@ public class Company {
     @Id
     @Column(name = "email")
     private String email;
+
+    @Column(name = "uuid")
+    @GeneratedValue(generator = "UUID")
+    private UUID uuid;
 
     @Column(name = "name")
     private String name;

@@ -22,7 +22,7 @@ public class RoomMapper {
     }
 
     public RoomDto toDto(@NotNull Room room) {
-        RoomDto roomDto = new RoomDto(room.getId(), room.getName(), room.getStreet(), room.getCity(), room.getZipCode(),
+        RoomDto roomDto = new RoomDto(room.getUuid(), room.getName(), room.getStreet(), room.getCity(), room.getZipCode(),
                 room.getLatitude(), room.getLongitude(), room.getDescription(), room.getPriceHour(), room.getPriceHalfDay(),
                 room.getPriceDay(), room.getMaxPeople(), room.getArea(), LocalDate.parse(room.getDateCreated()));
         List<ImageDto> images = room.getImages().stream().map(imageMapper::toDto).toList();

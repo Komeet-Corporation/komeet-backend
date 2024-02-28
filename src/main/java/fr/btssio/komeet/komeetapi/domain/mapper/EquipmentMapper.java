@@ -13,7 +13,7 @@ public class EquipmentMapper {
 
     public EquipmentDto toDto(@NotNull Equipment equipment) {
         EquipmentDto equipmentDto = new EquipmentDto();
-        equipmentDto.setId(equipment.getId());
+        equipmentDto.setUuid(equipment.getUuid());
         equipmentDto.setLabel(equipment.getLabel());
         return equipmentDto;
     }

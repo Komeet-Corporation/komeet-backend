@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -15,6 +16,10 @@ public class Room {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "uuid")
+    @GeneratedValue(generator = "UUID")
+    private UUID uuid;
 
     @Column(name = "company", insertable = false, updatable = false)
     private String company;

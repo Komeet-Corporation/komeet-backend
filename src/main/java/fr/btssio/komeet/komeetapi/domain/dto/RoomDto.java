@@ -4,11 +4,12 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class RoomDto {
 
-    private Long id;
+    private UUID uuid;
     private String name;
     private String street;
     private String city;
@@ -25,10 +26,10 @@ public class RoomDto {
     private List<ImageDto> images;
     private List<EquipmentDto> equipments;
 
-    public RoomDto(Long id, String name, String street, String city, String zipCode, Double latitude, Double longitude,
+    public RoomDto(UUID uuid, String name, String street, String city, String zipCode, Double latitude, Double longitude,
                     String description, Long priceHour, Long priceHalfDay, Long priceDay, Long maxPeople, Long area,
                     LocalDate dateCreated) {
-        this.id = id;
+        this.uuid = uuid;
         this.name = name;
         this.street = street;
         this.city = city;
