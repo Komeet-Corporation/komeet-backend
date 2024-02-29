@@ -19,6 +19,10 @@ public class User {
     @GeneratedValue(generator = "UUID")
     private UUID uuid;
 
+    @OneToOne
+    @JoinColumn(name = "role")
+    private Role role;
+
     @Column(name = "password")
     private String password;
 

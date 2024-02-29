@@ -10,6 +10,7 @@ public class UserDto {
 
     private String email;
     private UUID uuid;
+    private RoleDto role;
     private String firstName;
     private String lastName;
     private List<RoomDto> favorites;

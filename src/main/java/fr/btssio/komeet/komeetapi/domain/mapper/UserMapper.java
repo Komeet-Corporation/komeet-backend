@@ -12,15 +12,18 @@ import java.util.List;
 public class UserMapper {
 
     private final RoomMapper roomMapper;
+    private final RoleMapper roleMapper;
 
-    public UserMapper(RoomMapper roomMapper) {
+    public UserMapper(RoomMapper roomMapper, RoleMapper roleMapper) {
         this.roomMapper = roomMapper;
+        this.roleMapper = roleMapper;
     }
 
     public UserDto toDto(@NotNull User user) {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setUuid(user.getUuid());
+        userDto.setRole(roleMapper.toDto(user.getRole()));
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         List<RoomDto> favorites = user.getFavorites().stream().map(roomMapper::toDto).toList();

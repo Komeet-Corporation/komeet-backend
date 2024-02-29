@@ -10,13 +10,15 @@ public class CompanyDto {
 
     private String email;
     private UUID uuid;
+    private RoleDto role;
     private String name;
     private String phone;
     private List<RoomDto> rooms;
 
-    public CompanyDto(String email, UUID uuid, String name, String phone) {
+    public CompanyDto(String email, UUID uuid, RoleDto role, String name, String phone) {
         this.email = email;
         this.uuid = uuid;
+        this.role = role;
         this.name = name;
         this.phone = phone;
     }

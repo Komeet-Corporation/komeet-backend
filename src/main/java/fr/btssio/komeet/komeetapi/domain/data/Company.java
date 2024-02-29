@@ -19,6 +19,10 @@ public class Company {
     @GeneratedValue(generator = "UUID")
     private UUID uuid;
 
+    @OneToOne
+    @JoinColumn(name = "role")
+    private Role role;
+
     @Column(name = "name")
     private String name;
 
