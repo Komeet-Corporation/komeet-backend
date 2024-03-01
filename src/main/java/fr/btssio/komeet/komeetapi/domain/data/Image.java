@@ -3,8 +3,6 @@ package fr.btssio.komeet.komeetapi.domain.data;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @Entity
 @Table(name = "image")
@@ -16,8 +14,7 @@ public class Image {
     private Long id;
 
     @Column(name = "uuid")
-    @GeneratedValue(generator = "UUID")
-    private UUID uuid;
+    private String uuid;
 
     @Column(name = "path")
     private String path;

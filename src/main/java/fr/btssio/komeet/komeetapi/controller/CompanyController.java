@@ -1,15 +1,20 @@
 package fr.btssio.komeet.komeetapi.controller;
 
 import fr.btssio.komeet.komeetapi.domain.dto.CompanyDto;
+import fr.btssio.komeet.komeetapi.domain.exception.ConflictException;
 import fr.btssio.komeet.komeetapi.service.CompanyService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
+@RequestMapping("/company")
 public class CompanyController {
-
-    private static final String PATH = "/company/";
 
     private final CompanyService companyService;
 
@@ -17,8 +22,18 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @GetMapping(PATH + "{email}")
-    public CompanyDto getByEmail(@PathVariable String email) {
-        return this.companyService.findByEmail(email);
+    @GetMapping("/{email}")
+    public ResponseEntity<CompanyDto> getByEmail(@PathVariable String email) {
+        try {
+            CompanyDto companyDto = companyService.findByEmail(email);
+            log.info("Request body : {}", companyDto.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(companyDto);
+        } catch (ConflictException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

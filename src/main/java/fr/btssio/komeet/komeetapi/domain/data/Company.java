@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -16,8 +15,7 @@ public class Company {
     private String email;
 
     @Column(name = "uuid")
-    @GeneratedValue(generator = "UUID")
-    private UUID uuid;
+    private String uuid;
 
     @OneToOne
     @JoinColumn(name = "role")

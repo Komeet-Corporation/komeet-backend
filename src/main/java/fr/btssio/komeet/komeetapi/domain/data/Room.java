@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -18,8 +17,7 @@ public class Room {
     private Long id;
 
     @Column(name = "uuid")
-    @GeneratedValue(generator = "UUID")
-    private UUID uuid;
+    private String uuid;
 
     @Column(name = "company", insertable = false, updatable = false)
     private String company;

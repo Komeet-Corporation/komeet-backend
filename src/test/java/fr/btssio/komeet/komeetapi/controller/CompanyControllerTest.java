@@ -8,13 +8,14 @@ import fr.btssio.komeet.komeetapi.repository.CompanyRepository;
 import fr.btssio.komeet.komeetapi.service.CompanyService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,17 +35,17 @@ class CompanyControllerTest {
         Optional<Company> company = createCompany();
         when(companyRepository.findById("test@test.test")).thenReturn(company);
 
-        CompanyDto notNull = companyController.getByEmail("test@test.test");
-        CompanyDto isNull = companyController.getByEmail("test");
+        ResponseEntity<CompanyDto> code200 = companyController.getByEmail("test@test.test");
+        ResponseEntity<CompanyDto> code409 = companyController.getByEmail("test");
 
-        assertNotNull(notNull);
-        assertNull(isNull);
+        assertEquals(HttpStatus.OK, code200.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT, code409.getStatusCode());
     }
 
     private @NotNull Optional<Company> createCompany() {
         Company company = new Company();
         company.setEmail("test@test.test");
-        company.setUuid(UUID.randomUUID());
+        company.setUuid(String.valueOf(UUID.randomUUID()));
         company.setRole(createRole());
         company.setName("Test");
         company.setPhone("0000000000");
@@ -55,7 +56,7 @@ class CompanyControllerTest {
     private @NotNull Role createRole() {
         Role role = new Role();
         role.setId(1L);
-        role.setUuid(UUID.randomUUID());
+        role.setUuid(String.valueOf(UUID.randomUUID()));
         role.setLabel("USER");
         role.setLevel(8979798797987987L);
         return role;

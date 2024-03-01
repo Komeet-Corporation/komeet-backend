@@ -3,8 +3,6 @@ package fr.btssio.komeet.komeetapi.domain.data;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @Entity
 @Table(name = "role")
@@ -16,8 +14,7 @@ public class Role {
     private Long id;
 
     @Column(name = "uuid")
-    @GeneratedValue(generator = "UUID")
-    private UUID uuid;
+    private String uuid;
 
     @Column(name = "label")
     private String label;

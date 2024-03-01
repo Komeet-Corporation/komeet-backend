@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class CompanyMapper {
@@ -22,7 +23,7 @@ public class CompanyMapper {
 
     public CompanyDto toDto(@NotNull Company company) {
         RoleDto roleDto = roleMapper.toDto(company.getRole());
-        CompanyDto companyDto = new CompanyDto(company.getEmail(), company.getUuid(), roleDto, company.getName(), company.getPhone());
+        CompanyDto companyDto = new CompanyDto(company.getEmail(), UUID.fromString(company.getUuid()), roleDto, company.getName(), company.getPhone());
         List<RoomDto> rooms = company.getRooms().stream().map(roomMapper::toDto).toList();
         companyDto.setRooms(rooms);
         return companyDto;

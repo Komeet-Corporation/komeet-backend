@@ -5,6 +5,8 @@ import fr.btssio.komeet.komeetapi.domain.dto.ImageDto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ImageMapper {
 
@@ -13,7 +15,7 @@ public class ImageMapper {
 
     public ImageDto toDto(@NotNull Image image) {
         ImageDto imageDto = new ImageDto();
-        imageDto.setUuid(image.getUuid());
+        imageDto.setUuid(UUID.fromString(image.getUuid()));
         imageDto.setPath(image.getPath());
         return imageDto;
     }

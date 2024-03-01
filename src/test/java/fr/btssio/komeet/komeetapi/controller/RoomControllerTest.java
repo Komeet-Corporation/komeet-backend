@@ -12,10 +12,14 @@ import fr.btssio.komeet.komeetapi.service.RoomService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -34,14 +38,16 @@ class RoomControllerTest {
     void findAll() {
         when(roomRepository.findAll()).thenReturn(createRooms());
 
-        List<RoomDto> rooms = roomController.getAll();
+        ResponseEntity<List<RoomDto>> code200 = roomController.getAll();
 
-        assertEquals(1, rooms.size());
+        assertEquals(HttpStatus.OK, code200.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(code200.getBody()).size());
     }
 
     private @NotNull @Unmodifiable List<Room> createRooms() {
         Room room = new Room();
         room.setId(1L);
+        room.setUuid(String.valueOf(UUID.randomUUID()));
         room.setCompany("Test");
         room.setName("Test");
         room.setStreet("Test");
@@ -64,6 +70,7 @@ class RoomControllerTest {
     private @NotNull @Unmodifiable List<Equipment> createEquipments() {
         Equipment equipment = new Equipment();
         equipment.setId(1L);
+        equipment.setUuid(String.valueOf(UUID.randomUUID()));
         equipment.setLabel("RJ45");
         equipment.setRooms(new ArrayList<>());
         return List.of(equipment);
@@ -72,6 +79,7 @@ class RoomControllerTest {
     private @NotNull @Unmodifiable List<Image> createImages() {
         Image image = new Image();
         image.setId(1L);
+        image.setUuid(String.valueOf(UUID.randomUUID()));
         image.setPath("PATH");
         image.setRoom(null);
         return List.of(image);
