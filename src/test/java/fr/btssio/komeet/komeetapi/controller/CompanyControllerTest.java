@@ -6,6 +6,7 @@ import fr.btssio.komeet.komeetapi.domain.dto.CompanyDto;
 import fr.btssio.komeet.komeetapi.domain.mapper.*;
 import fr.btssio.komeet.komeetapi.repository.CompanyRepository;
 import fr.btssio.komeet.komeetapi.service.CompanyService;
+import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,6 +42,15 @@ class CompanyControllerTest {
 
         assertEquals(HttpStatus.OK, code200.getStatusCode());
         assertEquals(HttpStatus.CONFLICT, code409.getStatusCode());
+    }
+
+    @Test
+    void getByEmail_exception() {
+        when(companyRepository.findById(anyString())).thenThrow(JDBCException.class);
+
+        ResponseEntity<CompanyDto> code500 = companyController.getByEmail("test");
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
     }
 
     private @NotNull Optional<Company> createCompany() {

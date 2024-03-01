@@ -7,8 +7,10 @@ import fr.btssio.komeet.komeetapi.domain.mapper.*;
 import fr.btssio.komeet.komeetapi.repository.RoleRepository;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import fr.btssio.komeet.komeetapi.service.UserService;
+import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.TestAbortedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +19,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +46,52 @@ class UserControllerTest {
 
         assertEquals(HttpStatus.OK, code200.getStatusCode());
         assertEquals(HttpStatus.CONFLICT, code409.getStatusCode());
+    }
+
+    @Test
+    void getByEmail_exception() {
+        when(userRepository.findById(anyString())).thenThrow(JDBCException.class);
+
+        ResponseEntity<UserDto> code500 = userController.getByEmail("test");
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
+    }
+
+    @Test
+    void insert() {
+        Optional<User> user = createUser();
+        if (user.isEmpty()) throw new TestAbortedException();
+        UserDto userDto = userMapper.toDto(user.get());
+        when(userRepository.existsById(anyString())).thenReturn(false);
+
+        ResponseEntity<Void> code200 = userController.insert("password", userDto);
+
+        assertEquals(HttpStatus.OK, code200.getStatusCode());
+    }
+
+    @Test
+    void insert_conflict_exception() {
+        Optional<User> user = createUser();
+        if (user.isEmpty()) throw new TestAbortedException();
+        UserDto userDto = userMapper.toDto(user.get());
+        when(userRepository.existsById(anyString())).thenReturn(true);
+
+        ResponseEntity<Void> code409 = userController.insert("password", userDto);
+
+        assertEquals(HttpStatus.CONFLICT, code409.getStatusCode());
+    }
+
+    @Test
+    void insert_exception() {
+        Optional<User> user = createUser();
+        if (user.isEmpty()) throw new TestAbortedException();
+        UserDto userDto = userMapper.toDto(user.get());
+        when(userRepository.existsById(anyString())).thenReturn(false);
+        when(userRepository.save(any())).thenThrow(JDBCException.class);
+
+        ResponseEntity<Void> code500 = userController.insert("password", userDto);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
     }
 
     private @NotNull Optional<User> createUser() {

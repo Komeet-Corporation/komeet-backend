@@ -32,7 +32,7 @@ public class CompanyController {
             log.warn(e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error during getting company by email", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

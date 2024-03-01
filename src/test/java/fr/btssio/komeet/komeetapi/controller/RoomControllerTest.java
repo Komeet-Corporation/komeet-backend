@@ -9,6 +9,7 @@ import fr.btssio.komeet.komeetapi.domain.mapper.ImageMapper;
 import fr.btssio.komeet.komeetapi.domain.mapper.RoomMapper;
 import fr.btssio.komeet.komeetapi.repository.RoomRepository;
 import fr.btssio.komeet.komeetapi.service.RoomService;
+import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,15 @@ class RoomControllerTest {
 
         assertEquals(HttpStatus.OK, code200.getStatusCode());
         assertEquals(1, Objects.requireNonNull(code200.getBody()).size());
+    }
+
+    @Test
+    void findAll_exception() {
+        when(roomRepository.findAll()).thenThrow(JDBCException.class);
+
+        ResponseEntity<List<RoomDto>> code500 = roomController.getAll();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
     }
 
     private @NotNull @Unmodifiable List<Room> createRooms() {
