@@ -5,6 +5,7 @@ import fr.btssio.komeet.komeetapi.domain.data.User;
 import fr.btssio.komeet.komeetapi.domain.dto.UserDto;
 import fr.btssio.komeet.komeetapi.domain.mapper.*;
 import fr.btssio.komeet.komeetapi.repository.RoleRepository;
+import fr.btssio.komeet.komeetapi.repository.RoomRepository;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import fr.btssio.komeet.komeetapi.service.UserService;
 import org.hibernate.JDBCException;
@@ -28,12 +29,13 @@ class UserControllerTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
     private final RoleRepository roleRepository = mock(RoleRepository.class);
+    private final RoomRepository roomRepository = mock(RoomRepository.class);
     private final EquipmentMapper equipmentMapper = new EquipmentMapper();
     private final ImageMapper imageMapper = new ImageMapper();
     private final RoomMapper roomMapper = new RoomMapper(imageMapper, equipmentMapper);
     private final RoleMapper roleMapper = new RoleMapper();
     private final UserMapper userMapper = new UserMapper(roomMapper, roleMapper);
-    private final UserService userService = new UserService(userRepository, userMapper, roleRepository);
+    private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository);
     private final UserController userController = new UserController(userService);
 
     @Test
