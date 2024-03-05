@@ -52,7 +52,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/room").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
                         .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
                         .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
-                        .requestMatchers(HttpMethod.PUT, "/user").hasAnyRole(UNKNOWN, USER, ADMIN, SUPER_ADMIN))
+                        .requestMatchers(HttpMethod.PUT, "/user").hasAnyRole(UNKNOWN, USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(USER, ADMIN, SUPER_ADMIN))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();

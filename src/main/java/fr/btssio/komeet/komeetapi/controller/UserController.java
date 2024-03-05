@@ -48,4 +48,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/favorite")
+    public ResponseEntity<Void> favorite(@RequestParam String uuidUser, @RequestParam String uuidRoom) {
+        try {
+            String action = userService.favorite(uuidUser, uuidRoom);
+            log.info("User {} {} favorite Room {}", uuidUser, action, uuidRoom);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ConflictException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            log.error("Error during adding favorite for User {}", uuidUser, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
