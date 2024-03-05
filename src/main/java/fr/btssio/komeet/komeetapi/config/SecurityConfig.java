@@ -1,7 +1,7 @@
 package fr.btssio.komeet.komeetapi.config;
 
+import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,15 +14,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 public class SecurityConfig {
 
-    @Value("${application.username}")
-    private String username;
+    private static final String SUPER_ADMIN = "3";
+    private static final String ADMIN = "2";
+    private static final String USER = "1";
+    private static final String UNKNOWN = "0";
+    private final UserRepository userRepository;
 
-    @Value("${application.password}")
-    private String password;
-    private static final String GRANT = "GRANT";
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -31,21 +37,33 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager initSecurityUser() {
-        UserDetails user = User.builder()
-                .username(username)
-                .password(encoder().encode(password))
-                .roles(GRANT)
-                .build();
-        return new InMemoryUserDetailsManager(user);
+        List<UserDetails> userDetails = userRepository.findAll().stream()
+                .map(user -> User.builder().username(user.getEmail())
+                        .password(encoder().encode(user.getPassword()))
+                        .roles(checkRole(user.getRole().getLevel()))
+                        .build())
+                .toList();
+        return new InMemoryUserDetailsManager(userDetails);
     }
 
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.PUT).hasRole(GRANT)
-                        .requestMatchers("**").hasRole(GRANT))
+                        .requestMatchers(HttpMethod.GET, "/room").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.PUT, "/user").hasAnyRole(UNKNOWN, USER, ADMIN, SUPER_ADMIN))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
+
+    private String checkRole(Long level) {
+        String[] roles = {SUPER_ADMIN, ADMIN, USER, UNKNOWN};
+        return Arrays.stream(roles)
+                .filter(role -> role.equals(level.toString()))
+                .findFirst()
+                .orElse(UNKNOWN);
+    }
+
 }

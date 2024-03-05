@@ -22,4 +22,10 @@ public class CompanyDto {
         this.name = name;
         this.phone = phone;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDto(email=" + email + ", uuid=" + uuid + ", role=" + role.toString() + ", name=" + name
+                + ", phone=" + phone + ", rooms=" + rooms.size() + ")";
+    }
 }

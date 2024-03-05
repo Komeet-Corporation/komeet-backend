@@ -33,7 +33,7 @@ public class UserMapper {
         return userDto;
     }
 
-    public User toUser(UserDto userDto, Role role, String password) {
+    public User toUser(@NotNull UserDto userDto, Role role, String password) {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setUuid(userDto.getUuid() != null ? String.valueOf(userDto.getUuid()) : String.valueOf(UUID.randomUUID()));

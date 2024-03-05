@@ -14,4 +14,10 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private List<RoomDto> favorites;
+
+    @Override
+    public String toString() {
+        return "UserDto(email=" + email + ", uuid=" + uuid + ", role=" + role.toString() + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", favorites=" + favorites.size() + ")";
+    }
 }
