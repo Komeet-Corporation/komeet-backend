@@ -1,7 +1,6 @@
 package fr.btssio.komeet.komeetapi.controller;
 
-import fr.btssio.komeet.komeetapi.domain.data.Role;
-import fr.btssio.komeet.komeetapi.domain.data.User;
+import fr.btssio.komeet.komeetapi.domain.data.*;
 import fr.btssio.komeet.komeetapi.domain.dto.UserDto;
 import fr.btssio.komeet.komeetapi.domain.mapper.*;
 import fr.btssio.komeet.komeetapi.repository.RoleRepository;
@@ -10,18 +9,20 @@ import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import fr.btssio.komeet.komeetapi.service.UserService;
 import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -96,6 +97,54 @@ class UserControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
     }
 
+    @Test
+    void add_favorite() {
+        Optional<User> user = createUser();
+        Optional<Room> room = createRoom();
+        if (user.isEmpty() || room.isEmpty()) throw new TestAbortedException();
+        when(userRepository.existsByUuid(anyString())).thenReturn(true);
+        when(roomRepository.existsByUuid(anyString())).thenReturn(true);
+
+        ResponseEntity<Void> add200 = userController.favorite(user.get().getUuid(), room.get().getUuid());
+
+        assertEquals(HttpStatus.OK, add200.getStatusCode());
+    }
+
+    @Test
+    void remove_favorite() {
+        Optional<User> user = createUser();
+        Optional<Room> room = createRoom();
+        if (user.isEmpty() || room.isEmpty()) throw new TestAbortedException();
+        when(userRepository.existsByUuid(anyString())).thenReturn(true);
+        when(userRepository.findEmailByUuid(anyString())).thenReturn(user.get().getEmail());
+        when(userRepository.existsFavorite(anyString(), anyLong())).thenReturn(true);
+        when(roomRepository.existsByUuid(anyString())).thenReturn(true);
+        when(roomRepository.findIdByUuid(anyString())).thenReturn(room.get().getId());
+
+        ResponseEntity<Void> add200 = userController.favorite(user.get().getUuid(), room.get().getUuid());
+
+        assertEquals(HttpStatus.OK, add200.getStatusCode());
+    }
+
+    @Test
+    void favorite_conflict_exception() {
+        when(userRepository.existsByUuid(anyString())).thenReturn(false);
+        when(roomRepository.existsByUuid(anyString())).thenReturn(false);
+
+        ResponseEntity<Void> code409 = userController.favorite(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+
+        assertEquals(HttpStatus.CONFLICT, code409.getStatusCode());
+    }
+
+    @Test
+    void favorite_exception() {
+        when(userRepository.existsByUuid(anyString())).thenThrow(JDBCException.class);
+
+        ResponseEntity<Void> code500 = userController.favorite(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
+    }
+
     private @NotNull Optional<User> createUser() {
         User user = new User();
         user.setEmail("test@test.test");
@@ -115,5 +164,46 @@ class UserControllerTest {
         role.setLabel("USER");
         role.setLevel(8979798797987987L);
         return role;
+    }
+
+    private @NotNull Optional<Room> createRoom() {
+        Room room = new Room();
+        room.setId(1L);
+        room.setUuid(String.valueOf(UUID.randomUUID()));
+        room.setCompany("Test");
+        room.setName("Test");
+        room.setStreet("Test");
+        room.setCity("Test");
+        room.setZipCode("Test");
+        room.setLatitude(0.0);
+        room.setLongitude(0.0);
+        room.setDescription("Test");
+        room.setPriceHour(0L);
+        room.setPriceHalfDay(0L);
+        room.setPriceDay(0L);
+        room.setMaxPeople(0L);
+        room.setArea(0L);
+        room.setDateCreated(String.valueOf(LocalDate.now()));
+        room.setImages(createImages());
+        room.setEquipments(createEquipments());
+        return Optional.of(room);
+    }
+
+    private @NotNull @Unmodifiable List<Equipment> createEquipments() {
+        Equipment equipment = new Equipment();
+        equipment.setId(1L);
+        equipment.setUuid(String.valueOf(UUID.randomUUID()));
+        equipment.setLabel("RJ45");
+        equipment.setRooms(new ArrayList<>());
+        return List.of(equipment);
+    }
+
+    private @NotNull @Unmodifiable List<Image> createImages() {
+        Image image = new Image();
+        image.setId(1L);
+        image.setUuid(String.valueOf(UUID.randomUUID()));
+        image.setPath("PATH");
+        image.setRoom(null);
+        return List.of(image);
     }
 }

@@ -59,7 +59,7 @@ public class UserController {
             log.warn(e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            log.error("Error during adding favorite for User {}", uuidUser, e);
+            log.error("Error during favorite for User {}", uuidUser, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
