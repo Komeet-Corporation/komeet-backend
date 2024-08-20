@@ -63,4 +63,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/verify")
+    public ResponseEntity<UserDto> verify(@RequestParam String email, @RequestParam String password) {
+        try {
+            UserDto userDto = userService.verify(email, password);
+            return ResponseEntity.status(HttpStatus.OK).body(userDto);
+        } catch (ConflictException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            log.error("Error during verify for User {}", email, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
