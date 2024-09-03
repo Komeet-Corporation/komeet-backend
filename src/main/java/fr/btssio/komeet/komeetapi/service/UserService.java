@@ -9,7 +9,10 @@ import fr.btssio.komeet.komeetapi.repository.RoleRepository;
 import fr.btssio.komeet.komeetapi.repository.RoomRepository;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,17 +21,19 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final RoomRepository roomRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository,
-                       RoomRepository roomRepository) {
+                       RoomRepository roomRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
         this.roomRepository = roomRepository;
+        this.encoder = bCryptPasswordEncoder;
     }
 
     public UserDto findByEmail(String email) throws ConflictException {
-        User user = this.userRepository.findById(email).orElseThrow(() -> new ConflictException("User doesn't exist : " + email));
+        User user = userRepository.findById(email).orElseThrow(() -> new ConflictException("User doesn't exist : " + email));
         return userMapper.toDto(user);
     }
 
@@ -36,7 +41,7 @@ public class UserService {
         if (userRepository.existsById(userDto.getEmail()))
             throw new ConflictException("User already exist : " + userDto);
         Role role = roleRepository.findByUuid(String.valueOf(userDto.getRole().getUuid()));
-        User user = userMapper.toUser(userDto, role, password);
+        User user = userMapper.toUser(userDto, role, encoder.encode(password));
         userRepository.save(user);
     }
 
@@ -53,4 +58,13 @@ public class UserService {
             return "added";
         }
     }
+
+    public UserDto verify(String email, String password) throws ConflictException {
+        Optional<User> optional = userRepository.findById(email);
+        if (optional.isEmpty() || !encoder.matches(password, optional.get().getPassword())) {
+            throw new ConflictException("User cannot be verified : " + email);
+        }
+        return userMapper.toDto(optional.get());
+    }
+
 }

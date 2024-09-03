@@ -39,7 +39,7 @@ public class SecurityConfig {
     public InMemoryUserDetailsManager initSecurityUser() {
         List<UserDetails> userDetails = userRepository.findAll().stream()
                 .map(user -> User.builder().username(user.getEmail())
-                        .password(encoder().encode(user.getPassword()))
+                        .password(user.getPassword())
                         .roles(checkRole(user.getRole().getLevel()))
                         .build())
                 .toList();
@@ -49,11 +49,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("**").permitAll()).authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.GET, "/room").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
                         .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
                         .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/role/user").hasAnyRole(UNKNOWN, USER, ADMIN, SUPER_ADMIN)
                         .requestMatchers(HttpMethod.PUT, "/user").hasAnyRole(UNKNOWN, USER, ADMIN, SUPER_ADMIN)
-                        .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(USER, ADMIN, SUPER_ADMIN))
+                        .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(USER, ADMIN, SUPER_ADMIN)
+                        .requestMatchers("/actuator").hasAnyRole(SUPER_ADMIN))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
