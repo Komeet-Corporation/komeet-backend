@@ -21,3 +21,21 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B install --file pom.xml
+
+  deploy:
+    runs-on: debian-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Init SSH Key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: Pull maven and run
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.REPO_DIR }}/komeet-api
+          && git checkout ${{ secrets.MAIN_BRANCH }}
+          && git pull origin ${{ secrets.MAIN_BRANCH }}
+          && mvn clean install"
+      - name: Clean
+        run: rm -rf ~/.ssh
