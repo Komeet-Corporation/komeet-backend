@@ -32,6 +32,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
       - name: Pull maven and run
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.REPO_DIR }}/komeet-api
+          && git fetch -p
           && git checkout ${{ secrets.MAIN_BRANCH }}
           && git pull origin ${{ secrets.MAIN_BRANCH }}
           && mvn clean install"
