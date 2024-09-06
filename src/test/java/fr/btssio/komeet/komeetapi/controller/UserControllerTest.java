@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ class UserControllerTest {
     private final RoomMapper roomMapper = new RoomMapper(imageMapper, equipmentMapper);
     private final RoleMapper roleMapper = new RoleMapper();
     private final UserMapper userMapper = new UserMapper(roomMapper, roleMapper);
-    private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository);
+    private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository, mock(BCryptPasswordEncoder.class));
     private final UserController userController = new UserController(userService);
 
     @Test
