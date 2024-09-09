@@ -1,5 +1,6 @@
 package fr.btssio.komeet.komeetapi;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -9,7 +10,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class KomeetApiApplication extends SpringBootServletInitializer {
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    protected SpringApplicationBuilder configure(@NotNull SpringApplicationBuilder application) {
         return application.sources(KomeetApiApplication.class);
     }
 

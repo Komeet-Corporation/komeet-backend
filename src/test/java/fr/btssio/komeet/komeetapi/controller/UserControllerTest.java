@@ -32,12 +32,13 @@ class UserControllerTest {
     private final UserRepository userRepository = mock(UserRepository.class);
     private final RoleRepository roleRepository = mock(RoleRepository.class);
     private final RoomRepository roomRepository = mock(RoomRepository.class);
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final EquipmentMapper equipmentMapper = new EquipmentMapper();
     private final ImageMapper imageMapper = new ImageMapper();
     private final RoomMapper roomMapper = new RoomMapper(imageMapper, equipmentMapper);
     private final RoleMapper roleMapper = new RoleMapper();
     private final UserMapper userMapper = new UserMapper(roomMapper, roleMapper);
-    private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository, mock(BCryptPasswordEncoder.class));
+    private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository, encoder);
     private final UserController userController = new UserController(userService);
 
     @Test
@@ -146,12 +147,39 @@ class UserControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, code500.getStatusCode());
     }
 
+    @Test
+    void verify() {
+        when(userRepository.findById(any())).thenReturn(createUser());
+
+        ResponseEntity<UserDto> response = userController.verify("test@test.test", "test");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void verify_conflict_exception() {
+        when(userRepository.findById("test@test.test")).thenReturn(createUser());
+
+        ResponseEntity<UserDto> response = userController.verify("test@test.com", "test");
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    void verify_exception() {
+        when(userRepository.findById("test@test.test")).thenThrow(JDBCException.class);
+
+        ResponseEntity<UserDto> response = userController.verify("test@test.test", "test");
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
     private @NotNull Optional<User> createUser() {
         User user = new User();
         user.setEmail("test@test.test");
         user.setUuid(String.valueOf(UUID.randomUUID()));
         user.setRole(createRole());
-        user.setPassword("test");
+        user.setPassword(encoder.encode("test"));
         user.setFirstName("test");
         user.setLastName("test");
         user.setFavorites(new ArrayList<>());

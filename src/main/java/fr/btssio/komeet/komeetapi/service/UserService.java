@@ -1,5 +1,6 @@
 package fr.btssio.komeet.komeetapi.service;
 
+import fr.btssio.komeet.komeetapi.config.SecurityConfig;
 import fr.btssio.komeet.komeetapi.domain.data.Role;
 import fr.btssio.komeet.komeetapi.domain.data.User;
 import fr.btssio.komeet.komeetapi.domain.dto.UserDto;
@@ -9,13 +10,18 @@ import fr.btssio.komeet.komeetapi.repository.RoleRepository;
 import fr.btssio.komeet.komeetapi.repository.RoomRepository;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -67,4 +73,36 @@ public class UserService {
         return userMapper.toDto(optional.get());
     }
 
+    /**
+     * Don't use it for features development
+     * Method implemented by UserDetailsService for spring security
+     *
+     * @param email the username identifying the user whose data is required.
+     */
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> optional = userRepository.findById(email);
+        if (optional.isEmpty()) {
+            throw new UsernameNotFoundException("User doesn't exist : " + email);
+        }
+        User user = optional.get();
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .roles(getMaxRole(user.getAuthorities()))
+                .build();
+    }
+
+    private String getMaxRole(@NotNull Collection<Role> roles) {
+        if (roles.isEmpty()) {
+            return SecurityConfig.Role.UNKNOWN.name();
+        }
+        if (roles.size() == 1) {
+            return roles.iterator().next().getAuthority();
+        }
+        return roles.stream()
+                .max(Comparator.comparing(Role::getLevel))
+                .orElseThrow()
+                .getAuthority();
+    }
 }

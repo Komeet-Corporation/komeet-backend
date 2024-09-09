@@ -19,6 +19,6 @@ public class RoomService {
     }
 
     public List<RoomDto> findAll() {
-        return this.roomRepository.findAll().stream().map(roomMapper::toDto).toList();
+        return roomRepository.findAll().stream().map(roomMapper::toDto).toList();
     }
 }
