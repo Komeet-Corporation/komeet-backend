@@ -1,12 +1,14 @@
 package fr.btssio.komeet.komeetapi.domain.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 public class RoomDto {
 
     private UUID uuid;
