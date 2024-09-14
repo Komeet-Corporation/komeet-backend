@@ -12,7 +12,7 @@
     <artifactId>komeet-api</artifactId>
     <version>0.5.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>komeet-api</name>
+    <name>Komeet-api</name>
     <description>komeet-api</description>
     <properties>
         <java.version>21</java.version>
@@ -74,10 +74,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
     <build>

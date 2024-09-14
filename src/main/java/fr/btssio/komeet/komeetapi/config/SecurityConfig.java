@@ -23,13 +23,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, "/role/user").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/user").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/room").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/user/verify").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/room").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/role/user").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
-                        .requestMatchers("/actuator").hasAnyRole(Role.SUPER_ADMIN.name()))
+                        .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name()))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
