@@ -7,7 +7,6 @@ import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,11 +68,6 @@ public class EtlConfig {
         map.put(JOB_LOCATOR, jobRegistry);
         schedulerFactoryBean.setSchedulerContextAsMap(map);
         return schedulerFactoryBean;
-    }
-
-    @Bean
-    public StepBuilder stepBuilder() {
-        return new StepBuilder("stepBuilder", jobRepository);
     }
 
     @Bean
