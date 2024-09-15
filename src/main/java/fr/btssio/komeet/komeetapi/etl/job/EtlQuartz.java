@@ -4,6 +4,7 @@ import fr.btssio.komeet.komeetapi.etl.util.DateUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 @Getter
 @Setter
@@ -29,17 +31,25 @@ public class EtlQuartz extends QuartzJobBean {
 
     @Override
     protected void executeInternal(@NotNull JobExecutionContext context) {
-        JobParametersBuilder parameters = new JobParametersBuilder();
-        long startTime = System.currentTimeMillis();
-        parameters.addLong(START_TIME, startTime);
-        parameters.addString(FORMAT_START_TIME, DateUtils.formatMillisTime(startTime));
+        Runnable etl = createEtlRunnable(context);
+        Executors.newSingleThreadExecutor().submit(etl);
+    }
 
-        try {
-            Map<String, Object> map = context.getMergedJobDataMap();
-            String jobName = (String) map.get(JOB_NAME);
-            jobLauncher.run(jobLocator.getJob(jobName), parameters.toJobParameters());
-        } catch (Exception e) {
-            log.error("Error BATCH", e);
-        }
+    @Contract(pure = true)
+    private @NotNull Runnable createEtlRunnable(@NotNull JobExecutionContext context) {
+        return () -> {
+            JobParametersBuilder parameters = new JobParametersBuilder();
+            long startTime = System.currentTimeMillis();
+            parameters.addLong(START_TIME, startTime);
+            parameters.addString(FORMAT_START_TIME, DateUtils.formatMillisTime(startTime));
+
+            try {
+                Map<String, Object> map = context.getMergedJobDataMap();
+                String jobName = (String) map.get(JOB_NAME);
+                jobLauncher.run(jobLocator.getJob(jobName), parameters.toJobParameters());
+            } catch (Exception e) {
+                log.error("Error BATCH", e);
+            }
+        };
     }
 }
