@@ -8,7 +8,7 @@ public class EquipmentItemProcessor implements ItemProcessor<Equipment, String> 
 
     @Override
     public String process(@NotNull Equipment equipment) {
-        return String.format("INSERT INTO equipment (id, uuid, label) VALUES (%s, %s, %s);",
+        return String.format("INSERT INTO equipment (id, uuid, label) VALUES (%d, '%s', \"%s\");",
                 equipment.getId(),
                 equipment.getUuid(),
                 equipment.getLabel());

@@ -1,17 +1,8 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
-import fr.btssio.komeet.komeetapi.domain.data.Company;
-import fr.btssio.komeet.komeetapi.domain.data.Equipment;
-import fr.btssio.komeet.komeetapi.domain.data.Image;
-import fr.btssio.komeet.komeetapi.domain.data.Role;
-import fr.btssio.komeet.komeetapi.etl.processor.CompanyItemProcessor;
-import fr.btssio.komeet.komeetapi.etl.processor.EquipmentItemProcessor;
-import fr.btssio.komeet.komeetapi.etl.processor.ImageItemProcessor;
-import fr.btssio.komeet.komeetapi.etl.processor.RoleItemProcessor;
-import fr.btssio.komeet.komeetapi.repository.CompanyRepository;
-import fr.btssio.komeet.komeetapi.repository.EquipmentRepository;
-import fr.btssio.komeet.komeetapi.repository.ImageRepository;
-import fr.btssio.komeet.komeetapi.repository.RoleRepository;
+import fr.btssio.komeet.komeetapi.domain.data.*;
+import fr.btssio.komeet.komeetapi.etl.processor.*;
+import fr.btssio.komeet.komeetapi.repository.*;
 import fr.btssio.komeet.komeetapi.service.PathService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.Step;
@@ -44,7 +35,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveRoleTableStep(RoleRepository repository) {
-        RepositoryItemReader<Role> itemReader = itemReader(repository, "roleItemReader");
+        RepositoryItemReader<Role> itemReader = itemReader(repository, "roleItemReader", "id");
         FlatFileItemWriter<String> itemWriter = itemWriter("roles.sql", "roleItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveRoleTableStep", jobRepository);
         return stepBuilder
@@ -57,7 +48,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveEquipmentTableStep(EquipmentRepository repository) {
-        RepositoryItemReader<Equipment> itemReader = itemReader(repository, "equipmentItemReader");
+        RepositoryItemReader<Equipment> itemReader = itemReader(repository, "equipmentItemReader", "id");
         FlatFileItemWriter<String> itemWriter = itemWriter("equipments.sql", "equipmentItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveEquipmentTableStep", jobRepository);
         return stepBuilder
@@ -70,7 +61,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveImageTableStep(ImageRepository repository) {
-        RepositoryItemReader<Image> itemReader = itemReader(repository, "imageItemReader");
+        RepositoryItemReader<Image> itemReader = itemReader(repository, "imageItemReader", "id");
         FlatFileItemWriter<String> itemWriter = itemWriter("images.sql", "imageItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveImageTableStep", jobRepository);
         return stepBuilder
@@ -83,8 +74,8 @@ public class SaveTableStep {
 
     @Bean
     public Step saveCompanyTableStep(CompanyRepository repository) {
-        RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader");
-        FlatFileItemWriter<String> itemWriter = itemWriter("companies.sql", "companiesItemWriter");
+        RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader", "email");
+        FlatFileItemWriter<String> itemWriter = itemWriter("companies.sql", "companyItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveCompanyTableStep", jobRepository);
         return stepBuilder
                 .<Company, String>chunk(1, new ResourcelessTransactionManager())
@@ -94,12 +85,38 @@ public class SaveTableStep {
                 .build();
     }
 
-    private <T, ID> @NotNull RepositoryItemReader<T> itemReader(JpaRepository<T, ID> repository, String readerName) {
+    @Bean
+    public Step saveRoomTableStep(RoomRepository repository) {
+        RepositoryItemReader<Room> itemReader = itemReader(repository, "roomItemReader", "id");
+        FlatFileItemWriter<String> itemWriter = itemWriter("rooms.sql", "roomItemWriter");
+        StepBuilder stepBuilder = new StepBuilder("saveRoomTableStep", jobRepository);
+        return stepBuilder
+                .<Room, String>chunk(1, new ResourcelessTransactionManager())
+                .reader(itemReader)
+                .processor(new RoomItemProcessor())
+                .writer(itemWriter)
+                .build();
+    }
+
+    @Bean
+    public Step saveUserTableStep(UserRepository repository) {
+        RepositoryItemReader<User> itemReader = itemReader(repository, "userItemReader", "email");
+        FlatFileItemWriter<String> itemWriter = itemWriter("users.sql", "userItemWriter");
+        StepBuilder stepBuilder = new StepBuilder("saveUserTableStep", jobRepository);
+        return stepBuilder
+                .<User, String>chunk(1, new ResourcelessTransactionManager())
+                .reader(itemReader)
+                .processor(new UserItemProcessor())
+                .writer(itemWriter)
+                .build();
+    }
+
+    private <T, ID> @NotNull RepositoryItemReader<T> itemReader(JpaRepository<T, ID> repository, String readerName, String sort) {
         return new RepositoryItemReaderBuilder<T>()
                 .name(readerName)
                 .repository(repository)
                 .methodName("findAll")
-                .sorts(Collections.singletonMap("id", Sort.Direction.ASC))
+                .sorts(Collections.singletonMap(sort, Sort.Direction.ASC))
                 .build();
     }
 
