@@ -17,7 +17,7 @@ public class PathService {
     }
 
     public Path getTempPath() {
-        return Path.of(userHome + "\\komeet\\temp");
+        return Path.of(userHome + "/komeet/temp");
     }
 
     public Resource getTempFileAsResource(String filename) {
@@ -25,6 +25,6 @@ public class PathService {
     }
 
     public Path getSavePath() {
-        return Path.of(userHome + "\\komeet\\save");
+        return Path.of(userHome + "/komeet/save");
     }
 }
