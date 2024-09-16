@@ -2,6 +2,7 @@ package fr.btssio.komeet.komeetapi.etl.step;
 
 import fr.btssio.komeet.komeetapi.etl.config.EtlConfig;
 import fr.btssio.komeet.komeetapi.etl.tasklet.DeleteTempFileTasklet;
+import fr.btssio.komeet.komeetapi.etl.tasklet.WriteRestoreFileTasklet;
 import fr.btssio.komeet.komeetapi.service.PathService;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -25,6 +26,14 @@ public class FileStep {
         StepBuilder stepBuilder = new StepBuilder("deleteTempFileStep", etlConfig.getJobRepository());
         return stepBuilder
                 .tasklet(new DeleteTempFileTasklet(pathService), new ResourcelessTransactionManager())
+                .build();
+    }
+
+    @Bean
+    public Step writeRestoreFileStep() {
+        StepBuilder stepBuilder = new StepBuilder("writeRestoreFileStep", etlConfig.getJobRepository());
+        return stepBuilder
+                .tasklet(new WriteRestoreFileTasklet(pathService), new ResourcelessTransactionManager())
                 .build();
     }
 }

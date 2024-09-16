@@ -36,7 +36,7 @@ public class SaveTableStep {
     @Bean
     public Step saveRoleTableStep(RoleRepository repository) {
         RepositoryItemReader<Role> itemReader = itemReader(repository, "roleItemReader", "id");
-        FlatFileItemWriter<String> itemWriter = itemWriter("roles.sql", "roleItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("1roles.sql", "roleItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveRoleTableStep", jobRepository);
         return stepBuilder
                 .<Role, String>chunk(1, new ResourcelessTransactionManager())
@@ -49,7 +49,7 @@ public class SaveTableStep {
     @Bean
     public Step saveEquipmentTableStep(EquipmentRepository repository) {
         RepositoryItemReader<Equipment> itemReader = itemReader(repository, "equipmentItemReader", "id");
-        FlatFileItemWriter<String> itemWriter = itemWriter("equipments.sql", "equipmentItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("2equipments.sql", "equipmentItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveEquipmentTableStep", jobRepository);
         return stepBuilder
                 .<Equipment, String>chunk(1, new ResourcelessTransactionManager())
@@ -62,7 +62,7 @@ public class SaveTableStep {
     @Bean
     public Step saveImageTableStep(ImageRepository repository) {
         RepositoryItemReader<Image> itemReader = itemReader(repository, "imageItemReader", "id");
-        FlatFileItemWriter<String> itemWriter = itemWriter("images.sql", "imageItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("3images.sql", "imageItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveImageTableStep", jobRepository);
         return stepBuilder
                 .<Image, String>chunk(1, new ResourcelessTransactionManager())
@@ -75,7 +75,7 @@ public class SaveTableStep {
     @Bean
     public Step saveCompanyTableStep(CompanyRepository repository) {
         RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader", "email");
-        FlatFileItemWriter<String> itemWriter = itemWriter("companies.sql", "companyItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("4companies.sql", "companyItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveCompanyTableStep", jobRepository);
         return stepBuilder
                 .<Company, String>chunk(1, new ResourcelessTransactionManager())
@@ -88,7 +88,7 @@ public class SaveTableStep {
     @Bean
     public Step saveRoomTableStep(RoomRepository repository) {
         RepositoryItemReader<Room> itemReader = itemReader(repository, "roomItemReader", "id");
-        FlatFileItemWriter<String> itemWriter = itemWriter("rooms.sql", "roomItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("5rooms.sql", "roomItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveRoomTableStep", jobRepository);
         return stepBuilder
                 .<Room, String>chunk(1, new ResourcelessTransactionManager())
@@ -101,7 +101,7 @@ public class SaveTableStep {
     @Bean
     public Step saveUserTableStep(UserRepository repository) {
         RepositoryItemReader<User> itemReader = itemReader(repository, "userItemReader", "email");
-        FlatFileItemWriter<String> itemWriter = itemWriter("users.sql", "userItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("6users.sql", "userItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveUserTableStep", jobRepository);
         return stepBuilder
                 .<User, String>chunk(1, new ResourcelessTransactionManager())
@@ -114,7 +114,7 @@ public class SaveTableStep {
     @Bean
     public Step saveEquipTableStep(RoomRepository repository) {
         RepositoryItemReader<Room> itemReader = itemReader(repository, "equipItemReader", "id");
-        FlatFileItemWriter<String> itemWriter = itemWriter("equips.sql", "equipItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("7equips.sql", "equipItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveEquipTableStep", jobRepository);
         return stepBuilder
                 .<Room, String>chunk(1, new ResourcelessTransactionManager())
@@ -127,7 +127,7 @@ public class SaveTableStep {
     @Bean
     Step saveFavoriteTableStep(UserRepository repository) {
         RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", "email");
-        FlatFileItemWriter<String> itemWriter = itemWriter("favorites.sql", "favoriteItemWriter");
+        FlatFileItemWriter<String> itemWriter = itemWriter("8favorites.sql", "favoriteItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveFavoriteTableStep", jobRepository);
         return stepBuilder
                 .<User, String>chunk(1, new ResourcelessTransactionManager())

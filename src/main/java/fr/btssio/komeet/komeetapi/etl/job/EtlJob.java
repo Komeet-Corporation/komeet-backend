@@ -22,6 +22,8 @@ public class EtlJob {
     private static final String SAVE_USER_TABLE_STEP = "saveUserTableStep";
     private static final String SAVE_EQUIP_TABLE_STEP = "saveEquipTableStep";
     private static final String SAVE_FAVORITE_TABLE_STEP = "saveFavoriteTableStep";
+    private static final String WRITE_RESTORE_FILE_STEP = "writeRestoreFileStep";
+    private static final String ZIP_AND_SAVE_STEP = "zipAndSaveStep";
 
     private final JobBuilder jobBuilder;
 
@@ -39,7 +41,9 @@ public class EtlJob {
             @Qualifier(SAVE_ROOM_TABLE_STEP) Step saveRoomTableStep,
             @Qualifier(SAVE_USER_TABLE_STEP) Step saveUserTableStep,
             @Qualifier(SAVE_EQUIP_TABLE_STEP) Step saveEquipTableStep,
-            @Qualifier(SAVE_FAVORITE_TABLE_STEP) Step saveFavoriteTableStep
+            @Qualifier(SAVE_FAVORITE_TABLE_STEP) Step saveFavoriteTableStep,
+            @Qualifier(WRITE_RESTORE_FILE_STEP) Step writeRestoreFileStep,
+            @Qualifier(ZIP_AND_SAVE_STEP) Step zipAndSaveStep
     ) {
         return jobBuilder
                 .incrementer(new RunIdIncrementer())
@@ -53,6 +57,8 @@ public class EtlJob {
                 .next(saveUserTableStep)
                 .next(saveEquipTableStep)
                 .next(saveFavoriteTableStep)
+                .next(writeRestoreFileStep)
+                .next(zipAndSaveStep)
                 .build();
     }
 }
