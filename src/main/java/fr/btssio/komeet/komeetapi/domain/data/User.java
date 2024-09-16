@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @Column(name = "lastName")
     private String lastName;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "favorite",
             joinColumns = @JoinColumn(name = "user"),
             inverseJoinColumns = @JoinColumn(name = "room"))

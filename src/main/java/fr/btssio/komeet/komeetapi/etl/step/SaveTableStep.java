@@ -111,6 +111,32 @@ public class SaveTableStep {
                 .build();
     }
 
+    @Bean
+    public Step saveEquipTableStep(RoomRepository repository) {
+        RepositoryItemReader<Room> itemReader = itemReader(repository, "equipItemReader", "id");
+        FlatFileItemWriter<String> itemWriter = itemWriter("equips.sql", "equipItemWriter");
+        StepBuilder stepBuilder = new StepBuilder("saveEquipTableStep", jobRepository);
+        return stepBuilder
+                .<Room, String>chunk(1, new ResourcelessTransactionManager())
+                .reader(itemReader)
+                .processor(new EquipItemProcessor())
+                .writer(itemWriter)
+                .build();
+    }
+
+    @Bean
+    Step saveFavoriteTableStep(UserRepository repository) {
+        RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", "email");
+        FlatFileItemWriter<String> itemWriter = itemWriter("favorites.sql", "favoriteItemWriter");
+        StepBuilder stepBuilder = new StepBuilder("saveFavoriteTableStep", jobRepository);
+        return stepBuilder
+                .<User, String>chunk(1, new ResourcelessTransactionManager())
+                .reader(itemReader)
+                .processor(new FavoriteItemProcessor())
+                .writer(itemWriter)
+                .build();
+    }
+
     private <T, ID> @NotNull RepositoryItemReader<T> itemReader(JpaRepository<T, ID> repository, String readerName, String sort) {
         return new RepositoryItemReaderBuilder<T>()
                 .name(readerName)

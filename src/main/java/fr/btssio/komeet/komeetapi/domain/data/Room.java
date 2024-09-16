@@ -71,7 +71,7 @@ public class Room {
     @JoinColumn(name = "room")
     private List<Image> images;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "equip",
             joinColumns = @JoinColumn(name = "room"),
             inverseJoinColumns = @JoinColumn(name = "equipment"))
