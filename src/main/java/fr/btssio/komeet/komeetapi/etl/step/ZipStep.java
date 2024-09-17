@@ -1,6 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
 import fr.btssio.komeet.komeetapi.etl.config.EtlConfig;
+import fr.btssio.komeet.komeetapi.etl.tasklet.DeleteOldZipTasklet;
 import fr.btssio.komeet.komeetapi.etl.tasklet.ZipAndSaveTasklet;
 import fr.btssio.komeet.komeetapi.service.PathService;
 import org.springframework.batch.core.Step;
@@ -25,6 +26,14 @@ public class ZipStep {
         StepBuilder stepBuilder = new StepBuilder("zipAndSaveStep", etlConfig.getJobRepository());
         return stepBuilder
                 .tasklet(new ZipAndSaveTasklet(pathService), new ResourcelessTransactionManager())
+                .build();
+    }
+
+    @Bean
+    public Step deleteOldZipStep() {
+        StepBuilder stepBuilder = new StepBuilder("deleteOldZipStep", etlConfig.getJobRepository());
+        return stepBuilder
+                .tasklet(new DeleteOldZipTasklet(pathService), new ResourcelessTransactionManager())
                 .build();
     }
 }
