@@ -12,10 +12,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 public class ZipAndSaveTasklet implements Tasklet {
@@ -32,19 +33,19 @@ public class ZipAndSaveTasklet implements Tasklet {
         Optional<File> optional = Optional.ofNullable(pathService.getTempFile("restore.sql"));
         if (optional.isPresent()) {
             final File restoreFile = optional.get();
-            File zipFile = Path.of(pathService.getSavePath() + File.separator + getFullRestoreFilename()).toFile();
-            File restoreInZipFile = Path.of(zipFile.getPath() + File.separator + getFullRestoreFilename()).toFile();
-            if (zipFile.createNewFile() && restoreInZipFile.createNewFile()) {
+            final File zipFile = new File(pathService.getSavePath() + File.separator + getFullRestoreFilename());
+            if (zipFile.createNewFile()) {
                 log.info("Zip file created: {}", zipFile.getAbsolutePath());
-                log.info("Restore file created: {}", restoreInZipFile.getAbsolutePath());
-                try (FileOutputStream fos = new FileOutputStream(restoreInZipFile)) {
-                    try (FileInputStream fis = new FileInputStream(restoreFile)) {
-                        final byte[] buffer = new byte[8192];
-                        int read;
-                        while ((read = fis.read(buffer)) != -1) {
-                            fos.write(buffer, 0, read);
-                        }
+                try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
+                     FileInputStream fis = new FileInputStream(restoreFile)) {
+                    ZipEntry ze = new ZipEntry(restoreFile.getName());
+                    zos.putNextEntry(ze);
+                    byte[] buffer = new byte[8192];
+                    int read;
+                    while ((read = fis.read(buffer)) != -1) {
+                        zos.write(buffer, 0, read);
                     }
+                    zos.closeEntry();
                 }
             }
         }
@@ -52,7 +53,7 @@ public class ZipAndSaveTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 
-    private String getFullRestoreFilename() {
+    private @NotNull String getFullRestoreFilename() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
         String dateTime = dtf.format(LocalDateTime.now());
         return "full-restore-" + dateTime + ".zip";
