@@ -1,5 +1,6 @@
 package fr.btssio.komeet.komeetapi.etl.tasklet;
 
+import fr.btssio.komeet.komeetapi.etl.util.DateUtils;
 import fr.btssio.komeet.komeetapi.service.PathService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -12,14 +13,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Slf4j
 public class ZipAndSaveTasklet implements Tasklet {
+
+    private static final String FORMAT = "yyyyMMddHHmmssSSS";
 
     private final PathService pathService;
 
@@ -54,8 +55,7 @@ public class ZipAndSaveTasklet implements Tasklet {
     }
 
     private @NotNull String getFullRestoreFilename() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-        String dateTime = dtf.format(LocalDateTime.now());
+        String dateTime = DateUtils.formatMillisTime(System.currentTimeMillis(), FORMAT);
         return "full-restore-" + dateTime + ".zip";
     }
 }

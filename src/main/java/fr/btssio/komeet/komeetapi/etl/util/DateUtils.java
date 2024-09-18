@@ -9,14 +9,13 @@ import java.time.format.DateTimeFormatter;
 public class DateUtils {
 
     private static final String ZONE = "Europe/Paris";
-    private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private DateUtils() {
     }
 
-    public static @NotNull String formatMillisTime(long millis) {
+    public static @NotNull String formatMillisTime(long millis, String format) {
         Instant instant = Instant.ofEpochMilli(millis);
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, java.time.ZoneId.of(ZONE));
-        return localDateTime.format(DateTimeFormatter.ofPattern(FORMAT));
+        return localDateTime.format(DateTimeFormatter.ofPattern(format));
     }
 }

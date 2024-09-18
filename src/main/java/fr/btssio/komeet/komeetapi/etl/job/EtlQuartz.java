@@ -25,6 +25,7 @@ public class EtlQuartz extends QuartzJobBean {
     private static final String START_TIME = "startTime";
     private static final String FORMAT_START_TIME = "formatStartTime";
     private static final String JOB_NAME = "jobName";
+    private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private JobLocator jobLocator;
     private JobLauncher jobLauncher;
@@ -41,7 +42,7 @@ public class EtlQuartz extends QuartzJobBean {
             JobParametersBuilder parameters = new JobParametersBuilder();
             long startTime = System.currentTimeMillis();
             parameters.addLong(START_TIME, startTime);
-            parameters.addString(FORMAT_START_TIME, DateUtils.formatMillisTime(startTime));
+            parameters.addString(FORMAT_START_TIME, DateUtils.formatMillisTime(startTime, FORMAT));
 
             try {
                 Map<String, Object> map = context.getMergedJobDataMap();
