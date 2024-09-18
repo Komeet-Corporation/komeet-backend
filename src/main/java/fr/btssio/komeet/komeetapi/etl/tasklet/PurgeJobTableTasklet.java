@@ -23,7 +23,6 @@ public class PurgeJobTableTasklet implements Tasklet {
     private static final String SCRIPT_STEP_EXECUTION_CONTEXT = "DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID IN " +
             "(SELECT STEP_EXECUTION_ID FROM BATCH_STEP_EXECUTION WHERE JOB_EXECUTION_ID != %d);";
 
-
     private final DataSource dataSource;
 
     public PurgeJobTableTasklet(DataSource dataSource) {
