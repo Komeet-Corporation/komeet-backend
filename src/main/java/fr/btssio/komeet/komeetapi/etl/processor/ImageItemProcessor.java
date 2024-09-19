@@ -8,9 +8,10 @@ public class ImageItemProcessor implements ItemProcessor<Image, String> {
 
     @Override
     public String process(@NotNull Image image) {
-        return String.format("INSERT INTO image (id, uuid, path) VALUES (%d, '%s', '%s');",
+        return String.format("INSERT INTO image (id, uuid, path, room) VALUES (%d, '%s', '%s', %d);",
                 image.getId(),
                 image.getUuid(),
-                image.getPath());
+                image.getPath(),
+                image.getRoom());
     }
 }

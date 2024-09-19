@@ -16,7 +16,7 @@ class ImageItemProcessorTest {
 
         String result = processor.process(image);
 
-        assertEquals("INSERT INTO image (id, uuid, path) VALUES (1, 'd12ef486-f80b-4558-b294-5e351b0e86f2', 'path://');", result);
+        assertEquals("INSERT INTO image (id, uuid, path, room) VALUES (1, 'd12ef486-f80b-4558-b294-5e351b0e86f2', 'path://', 1);", result);
     }
 
     private @NotNull Image createImage() {
@@ -24,6 +24,7 @@ class ImageItemProcessorTest {
         image.setId(1L);
         image.setUuid("d12ef486-f80b-4558-b294-5e351b0e86f2");
         image.setPath("path://");
+        image.setRoom(1L);
         return image;
     }
 }
