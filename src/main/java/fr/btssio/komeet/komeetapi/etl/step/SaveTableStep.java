@@ -125,7 +125,7 @@ public class SaveTableStep {
     }
 
     @Bean
-    Step saveFavoriteTableStep(UserRepository repository) {
+    public Step saveFavoriteTableStep(UserRepository repository) {
         RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", "email");
         FlatFileItemWriter<String> itemWriter = itemWriter("8favorites.sql", "favoriteItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveFavoriteTableStep", jobRepository);
