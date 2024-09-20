@@ -4,6 +4,7 @@ import fr.btssio.komeet.komeetapi.domain.data.Role;
 import fr.btssio.komeet.komeetapi.domain.data.User;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,7 +27,7 @@ class KomeetApiApplicationTests {
         when(userRepository.findAll()).thenReturn(users);
     }
 
-    private List<User> createUsers() {
+    private @NotNull @Unmodifiable List<User> createUsers() {
         User user = new User();
         user.setEmail("test@test.test");
         user.setUuid(String.valueOf(UUID.randomUUID()));
