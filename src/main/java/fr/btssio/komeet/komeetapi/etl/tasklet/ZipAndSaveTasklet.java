@@ -1,8 +1,8 @@
 package fr.btssio.komeet.komeetapi.etl.tasklet;
 
-import fr.btssio.komeet.komeetapi.etl.util.DateUtils;
 import fr.btssio.komeet.komeetapi.service.PathService;
-import lombok.extern.slf4j.Slf4j;
+import fr.btssio.komeet.komeetapi.util.DateUtils;
+import fr.btssio.komeet.komeetapi.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@Slf4j
 public class ZipAndSaveTasklet implements Tasklet {
 
     private static final String FORMAT = "yyyyMMddHHmmssSSS";
@@ -36,7 +35,7 @@ public class ZipAndSaveTasklet implements Tasklet {
             final File restoreFile = optional.get();
             final File zipFile = new File(pathService.getSavePath() + File.separator + getFullRestoreFilename());
             if (zipFile.createNewFile()) {
-                log.info("Zip file created: {}", zipFile.getAbsolutePath());
+                LogUtils.logInfo(this.getClass(), "Zip file created: " + zipFile.getAbsolutePath());
                 try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
                      FileInputStream fis = new FileInputStream(restoreFile)) {
                     ZipEntry ze = new ZipEntry(restoreFile.getName());

@@ -1,7 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.tasklet;
 
 import fr.btssio.komeet.komeetapi.service.PathService;
-import lombok.extern.slf4j.Slf4j;
+import fr.btssio.komeet.komeetapi.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -12,7 +12,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Slf4j
 public class DeleteTempFileTasklet implements Tasklet {
 
     private final PathService pathService;
@@ -30,7 +29,7 @@ public class DeleteTempFileTasklet implements Tasklet {
             Arrays.stream(files)
                     .forEach(file -> {
                         if (file.delete()) {
-                            log.info("Deleted temp file {}", file.getName());
+                            LogUtils.logInfo(this.getClass(), "Deleted temp file " + file.getName());
                         }
                     });
         }

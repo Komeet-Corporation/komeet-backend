@@ -1,5 +1,6 @@
 package fr.btssio.komeet.komeetapi.etl.util;
 
+import fr.btssio.komeet.komeetapi.util.DateUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

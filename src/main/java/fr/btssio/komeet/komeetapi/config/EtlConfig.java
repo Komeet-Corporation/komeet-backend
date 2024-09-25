@@ -1,4 +1,4 @@
-package fr.btssio.komeet.komeetapi.etl.config;
+package fr.btssio.komeet.komeetapi.config;
 
 import fr.btssio.komeet.komeetapi.etl.job.EtlJob;
 import fr.btssio.komeet.komeetapi.etl.job.EtlQuartz;

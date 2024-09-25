@@ -1,4 +1,4 @@
-package fr.btssio.komeet.komeetapi.etl.util;
+package fr.btssio.komeet.komeetapi.util;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,9 +1,9 @@
 package fr.btssio.komeet.komeetapi.etl.job;
 
-import fr.btssio.komeet.komeetapi.etl.util.DateUtils;
+import fr.btssio.komeet.komeetapi.util.DateUtils;
+import fr.btssio.komeet.komeetapi.util.LogUtils;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;
@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 
 @Getter
 @Setter
-@Slf4j
 @Configuration
 public class EtlQuartz extends QuartzJobBean {
 
@@ -49,7 +48,7 @@ public class EtlQuartz extends QuartzJobBean {
                 String jobName = (String) map.get(JOB_NAME);
                 jobLauncher.run(jobLocator.getJob(jobName), parameters.toJobParameters());
             } catch (Exception e) {
-                log.error("Error BATCH", e);
+                LogUtils.logError(this.getClass(), "Error BATCH", e);
             }
         };
     }

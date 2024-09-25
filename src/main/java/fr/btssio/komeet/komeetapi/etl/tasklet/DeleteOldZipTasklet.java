@@ -1,7 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.tasklet;
 
 import fr.btssio.komeet.komeetapi.service.PathService;
-import lombok.extern.slf4j.Slf4j;
+import fr.btssio.komeet.komeetapi.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-@Slf4j
 public class DeleteOldZipTasklet implements Tasklet {
 
     private static final int NUMBER_OF_RESTORE_FILE = 10;
@@ -37,7 +36,7 @@ public class DeleteOldZipTasklet implements Tasklet {
                     .filter(file -> !FULL_RESTORE_FILENAME_PATTERN.matcher(file.getName()).matches())
                     .forEach(file -> {
                         if (file.delete()) {
-                            log.info("Deleted unknown file {}", file.getName());
+                            LogUtils.logInfo(this.getClass(), "Deleted unknown file " + file.getName());
                         }
                     });
             if (files.length > NUMBER_OF_RESTORE_FILE) {

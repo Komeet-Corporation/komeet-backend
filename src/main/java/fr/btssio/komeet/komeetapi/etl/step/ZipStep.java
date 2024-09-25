@@ -1,6 +1,6 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
-import fr.btssio.komeet.komeetapi.etl.config.EtlConfig;
+import fr.btssio.komeet.komeetapi.config.EtlConfig;
 import fr.btssio.komeet.komeetapi.etl.tasklet.DeleteOldZipTasklet;
 import fr.btssio.komeet.komeetapi.etl.tasklet.ZipAndSaveTasklet;
 import fr.btssio.komeet.komeetapi.service.PathService;

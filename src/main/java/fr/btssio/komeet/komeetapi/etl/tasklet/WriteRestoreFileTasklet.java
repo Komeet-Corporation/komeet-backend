@@ -1,7 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.tasklet;
 
 import fr.btssio.komeet.komeetapi.service.PathService;
-import lombok.extern.slf4j.Slf4j;
+import fr.btssio.komeet.komeetapi.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 public class WriteRestoreFileTasklet implements Tasklet {
 
     private static final String restoreFilename = "restore.sql";
@@ -36,7 +35,7 @@ public class WriteRestoreFileTasklet implements Tasklet {
                     .sorted(Comparator.comparing(File::getName))
                     .toList();
             if (restoreFile.createNewFile()) {
-                log.info("Created restore file {}", restoreFile);
+                LogUtils.logInfo(this.getClass(), "Created restore file " + restoreFile);
             }
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(restoreFile))) {
                 for (File file : files) {

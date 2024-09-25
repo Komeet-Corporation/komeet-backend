@@ -1,6 +1,6 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
-import fr.btssio.komeet.komeetapi.etl.config.EtlConfig;
+import fr.btssio.komeet.komeetapi.config.EtlConfig;
 import fr.btssio.komeet.komeetapi.etl.tasklet.PurgeJobTableTasklet;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
