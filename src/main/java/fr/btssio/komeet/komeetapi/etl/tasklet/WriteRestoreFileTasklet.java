@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 public class WriteRestoreFileTasklet implements Tasklet {
 
-    private static final String restoreFilename = "restore.sql";
+    private static final String RESTORE_FILENAME = "restore.sql";
 
     private final PathService pathService;
 
@@ -28,7 +28,7 @@ public class WriteRestoreFileTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) throws IOException {
 
-        final File restoreFile = new File(pathService.getTempPath() + File.separator + restoreFilename);
+        final File restoreFile = new File(pathService.getTempPath() + File.separator + RESTORE_FILENAME);
 
         Optional<File[]> optional = Optional.ofNullable(pathService.getTempPath().toFile().listFiles());
         if (optional.isPresent()) {

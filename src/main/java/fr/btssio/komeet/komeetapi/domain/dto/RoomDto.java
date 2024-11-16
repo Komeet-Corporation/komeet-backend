@@ -1,5 +1,6 @@
 package fr.btssio.komeet.komeetapi.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class RoomDto {
 
     private UUID uuid;
@@ -27,23 +29,4 @@ public class RoomDto {
     private LocalDate dateCreated;
     private List<ImageDto> images;
     private List<EquipmentDto> equipments;
-
-    public RoomDto(UUID uuid, String name, String street, String city, String zipCode, Double latitude, Double longitude,
-                    String description, Long priceHour, Long priceHalfDay, Long priceDay, Long maxPeople, Long area,
-                    LocalDate dateCreated) {
-        this.uuid = uuid;
-        this.name = name;
-        this.street = street;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.description = description;
-        this.priceHour = priceHour;
-        this.priceHalfDay = priceHalfDay;
-        this.priceDay = priceDay;
-        this.maxPeople = maxPeople;
-        this.area = area;
-        this.dateCreated = dateCreated;
-    }
 }

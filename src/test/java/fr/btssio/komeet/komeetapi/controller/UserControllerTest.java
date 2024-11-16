@@ -54,7 +54,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getByEmail_exception() {
+    void getByEmailException() {
         when(userRepository.findById(anyString())).thenThrow(JDBCException.class);
 
         ResponseEntity<UserDto> code500 = userController.getByEmail("test");
@@ -75,7 +75,7 @@ class UserControllerTest {
     }
 
     @Test
-    void insert_conflict_exception() {
+    void insertConflictException() {
         Optional<User> user = createUser();
         if (user.isEmpty()) throw new TestAbortedException();
         UserDto userDto = userMapper.toDto(user.get());
@@ -87,7 +87,7 @@ class UserControllerTest {
     }
 
     @Test
-    void insert_exception() {
+    void insertException() {
         Optional<User> user = createUser();
         if (user.isEmpty()) throw new TestAbortedException();
         UserDto userDto = userMapper.toDto(user.get());
@@ -100,7 +100,7 @@ class UserControllerTest {
     }
 
     @Test
-    void add_favorite() {
+    void addFavorite() {
         Optional<User> user = createUser();
         Optional<Room> room = createRoom();
         if (user.isEmpty() || room.isEmpty()) throw new TestAbortedException();
@@ -113,7 +113,7 @@ class UserControllerTest {
     }
 
     @Test
-    void remove_favorite() {
+    void removeFavorite() {
         Optional<User> user = createUser();
         Optional<Room> room = createRoom();
         if (user.isEmpty() || room.isEmpty()) throw new TestAbortedException();
@@ -129,7 +129,7 @@ class UserControllerTest {
     }
 
     @Test
-    void favorite_conflict_exception() {
+    void favoriteConflictException() {
         when(userRepository.existsByUuid(anyString())).thenReturn(false);
         when(roomRepository.existsByUuid(anyString())).thenReturn(false);
 
@@ -139,7 +139,7 @@ class UserControllerTest {
     }
 
     @Test
-    void favorite_exception() {
+    void favoriteException() {
         when(userRepository.existsByUuid(anyString())).thenThrow(JDBCException.class);
 
         ResponseEntity<Void> code500 = userController.favorite(UUID.randomUUID().toString(), UUID.randomUUID().toString());
@@ -157,7 +157,7 @@ class UserControllerTest {
     }
 
     @Test
-    void verify_conflict_exception() {
+    void verifyConflictException() {
         when(userRepository.findById("test@test.test")).thenReturn(createUser());
 
         ResponseEntity<UserDto> response = userController.verify("test@test.com", "test");
@@ -166,7 +166,7 @@ class UserControllerTest {
     }
 
     @Test
-    void verify_exception() {
+    void verifyException() {
         when(userRepository.findById("test@test.test")).thenThrow(JDBCException.class);
 
         ResponseEntity<UserDto> response = userController.verify("test@test.test", "test");

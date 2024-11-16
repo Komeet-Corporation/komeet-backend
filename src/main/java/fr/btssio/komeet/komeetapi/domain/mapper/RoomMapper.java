@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,8 @@ public class RoomMapper {
     public RoomDto toDto(@NotNull Room room) {
         RoomDto roomDto = new RoomDto(UUID.fromString(room.getUuid()), room.getName(), room.getStreet(), room.getCity(), room.getZipCode(),
                 room.getLatitude(), room.getLongitude(), room.getDescription(), room.getPriceHour(), room.getPriceHalfDay(),
-                room.getPriceDay(), room.getMaxPeople(), room.getArea(), LocalDate.parse(room.getDateCreated()));
+                room.getPriceDay(), room.getMaxPeople(), room.getArea(), LocalDate.parse(room.getDateCreated()),
+                new ArrayList<>(), new ArrayList<>());
         List<ImageDto> images = room.getImages().stream().map(imageMapper::toDto).toList();
         List<EquipmentDto> equipments = room.getEquipments().stream().map(equipmentMapper::toDto).toList();
         roomDto.setImages(images);

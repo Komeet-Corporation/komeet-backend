@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Getter
@@ -33,7 +34,9 @@ public class EtlQuartz extends QuartzJobBean {
     @Override
     protected void executeInternal(@NotNull JobExecutionContext context) {
         Runnable etl = createEtlRunnable(context);
-        Executors.newSingleThreadExecutor().submit(etl);
+        try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
+            executorService.submit(etl);
+        }
     }
 
     @Contract(pure = true)
