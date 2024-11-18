@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @JoinTable(name = "favorite",
             joinColumns = @JoinColumn(name = "user"),
             inverseJoinColumns = @JoinColumn(name = "room"))
-    private List<Room> favorites;
+    private transient List<Room> rooms;
 
     @Override
     public Collection<Role> getAuthorities() {
