@@ -20,7 +20,9 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 public class ZipAndSaveTasklet implements Tasklet {
 
-    private static final String FORMAT = "yyyyMMddHHmmssSSS";
+    private static final String RESTORE_FILENAME = "restore.sql";
+    private static final String FULL_RESTORE_FILENAME_PATTERN = "full-restore-%s.zip";
+    private static final String DATE_FORMAT = "yyyyMMddHHmmssSSS";
 
     private final PathService pathService;
 
@@ -31,31 +33,35 @@ public class ZipAndSaveTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) throws IOException {
 
-        Optional<File> optional = Optional.ofNullable(pathService.getTempFile("restore.sql"));
+        Optional<File> optional = Optional.ofNullable(pathService.getTempFile(RESTORE_FILENAME));
         if (optional.isPresent()) {
             final File restoreFile = optional.get();
             final File zipFile = new File(pathService.getSavePath() + File.separator + getFullRestoreFilename());
             if (zipFile.createNewFile()) {
                 log.info("Zip file created: {}", zipFile.getAbsolutePath());
-                try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
-                     FileInputStream fis = new FileInputStream(restoreFile)) {
-                    ZipEntry ze = new ZipEntry(restoreFile.getName());
-                    zos.putNextEntry(ze);
-                    byte[] buffer = new byte[8192];
-                    int read;
-                    while ((read = fis.read(buffer)) != -1) {
-                        zos.write(buffer, 0, read);
-                    }
-                    zos.closeEntry();
-                }
+                writeFullRestoreZipFile(zipFile, restoreFile);
             }
         }
 
         return RepeatStatus.FINISHED;
     }
 
+    private void writeFullRestoreZipFile(File zipFile, @NotNull File restoreFile) throws IOException {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
+             FileInputStream fis = new FileInputStream(restoreFile)) {
+            ZipEntry ze = new ZipEntry(restoreFile.getName());
+            zos.putNextEntry(ze);
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = fis.read(buffer)) != -1) {
+                zos.write(buffer, 0, read);
+            }
+            zos.closeEntry();
+        }
+    }
+
     private @NotNull String getFullRestoreFilename() {
-        String dateTime = DateUtils.formatMillisTime(System.currentTimeMillis(), FORMAT);
-        return "full-restore-" + dateTime + ".zip";
+        String dateTime = DateUtils.formatMillisTime(System.currentTimeMillis(), DATE_FORMAT);
+        return String.format(FULL_RESTORE_FILENAME_PATTERN, dateTime);
     }
 }

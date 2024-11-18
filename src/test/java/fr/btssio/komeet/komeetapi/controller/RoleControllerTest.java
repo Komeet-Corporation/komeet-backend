@@ -35,7 +35,7 @@ class RoleControllerTest {
     }
 
     @Test
-    void getUserRole_exception() {
+    void getUserRoleException() {
         when(roleRepository.findByLabel(anyString())).thenReturn(Optional.empty());
 
         ResponseEntity<RoleDto> response = roleController.getRoleUser();

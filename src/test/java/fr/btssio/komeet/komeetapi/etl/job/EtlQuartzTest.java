@@ -48,10 +48,11 @@ class EtlQuartzTest {
 
     @Test
     void executeInternal() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, NoSuchJobException {
+        Future<?> future = mock(Future.class);
         quartz.setJobLauncher(jobLauncher);
         quartz.setJobLocator(jobLocator);
         executors.when(Executors::newSingleThreadExecutor).thenReturn(executorService);
-        when(executorService.submit(any(Runnable.class))).thenReturn(mock(Future.class));
+        doReturn(future).when(executorService).submit(any(Runnable.class));
         when(jobLauncher.run(any(Job.class), any(JobParameters.class))).thenReturn(jobExecution);
         when(jobLocator.getJob(anyString())).thenReturn(job);
 

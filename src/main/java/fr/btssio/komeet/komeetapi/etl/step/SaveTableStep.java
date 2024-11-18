@@ -25,6 +25,8 @@ import java.util.Collections;
 @Configuration
 public class SaveTableStep {
 
+    private static final String EMAIL = "email";
+
     private final PathService pathService;
     private final JobRepository jobRepository;
 
@@ -48,7 +50,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveCompanyTableStep(CompanyRepository repository) {
-        RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader", "email");
+        RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("2companies.sql", "companyItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveCompanyTableStep", jobRepository);
         return stepBuilder
@@ -113,7 +115,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveUserTableStep(UserRepository repository) {
-        RepositoryItemReader<User> itemReader = itemReader(repository, "userItemReader", "email");
+        RepositoryItemReader<User> itemReader = itemReader(repository, "userItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("7users.sql", "userItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveUserTableStep", jobRepository);
         return stepBuilder
@@ -126,7 +128,7 @@ public class SaveTableStep {
 
     @Bean
     public Step saveFavoriteTableStep(UserRepository repository) {
-        RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", "email");
+        RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("8favorites.sql", "favoriteItemWriter");
         StepBuilder stepBuilder = new StepBuilder("saveFavoriteTableStep", jobRepository);
         return stepBuilder
@@ -137,7 +139,7 @@ public class SaveTableStep {
                 .build();
     }
 
-    private <T, ID> @NotNull RepositoryItemReader<T> itemReader(JpaRepository<T, ID> repository, String readerName, String sort) {
+    private <T, I> @NotNull RepositoryItemReader<T> itemReader(JpaRepository<T, I> repository, String readerName, String sort) {
         return new RepositoryItemReaderBuilder<T>()
                 .name(readerName)
                 .repository(repository)

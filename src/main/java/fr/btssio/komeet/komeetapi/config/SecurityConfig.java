@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> auth
+        http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.PUT, "/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/verify").permitAll()
                         .requestMatchers(HttpMethod.GET, "/room").permitAll()

@@ -46,7 +46,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void findAll_exception() {
+    void findAllException() {
         when(roomRepository.findAll()).thenThrow(JDBCException.class);
 
         ResponseEntity<List<RoomDto>> code500 = roomController.getAll();

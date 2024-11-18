@@ -11,6 +11,8 @@ import java.util.UUID;
 public class ImageMapper {
 
     public ImageMapper() {
+        /// No property(ies) needed
+        /// If you need to add more, delete this comment
     }
 
     public ImageDto toDto(@NotNull Image image) {

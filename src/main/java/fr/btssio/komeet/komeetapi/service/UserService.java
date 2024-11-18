@@ -94,15 +94,9 @@ public class UserService implements UserDetailsService {
     }
 
     private String getMaxRole(@NotNull Collection<Role> roles) {
-        if (roles.isEmpty()) {
-            return SecurityConfig.Role.UNKNOWN.name();
-        }
-        if (roles.size() == 1) {
-            return roles.iterator().next().getAuthority();
-        }
         return roles.stream()
                 .max(Comparator.comparing(Role::getLevel))
-                .orElseThrow()
-                .getAuthority();
+                .map(Role::getAuthority)
+                .orElse(SecurityConfig.Role.UNKNOWN.name());
     }
 }

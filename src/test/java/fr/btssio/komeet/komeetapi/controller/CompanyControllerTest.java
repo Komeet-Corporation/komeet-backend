@@ -45,7 +45,7 @@ class CompanyControllerTest {
     }
 
     @Test
-    void getByEmail_exception() {
+    void getByEmailException() {
         when(companyRepository.findById(anyString())).thenThrow(JDBCException.class);
 
         ResponseEntity<CompanyDto> code500 = companyController.getByEmail("test");
