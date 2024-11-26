@@ -1,22 +1,18 @@
 package fr.btssio.komeet.komeetapi.domain.data;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @Column(name = "email")
@@ -43,14 +39,4 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user"),
             inverseJoinColumns = @JoinColumn(name = "room"))
     private List<Room> favorites;
-
-    @Override
-    public Collection<Role> getAuthorities() {
-        return List.of(role);
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
 }

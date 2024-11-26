@@ -1,6 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
 import fr.btssio.komeet.komeetapi.etl.config.EtlConfig;
+import fr.btssio.komeet.komeetapi.etl.job.EtlJob;
 import fr.btssio.komeet.komeetapi.etl.tasklet.PurgeJobTableTasklet;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -23,7 +24,7 @@ public class JobTableStep {
 
     @Bean
     public Step purgeJobTableStep() {
-        StepBuilder stepBuilder = new StepBuilder("purgeJobTableStep", etlConfig.getJobRepository());
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.PURGE_JOB_TABLE_STEP, etlConfig.getJobRepository());
         return stepBuilder
                 .tasklet(new PurgeJobTableTasklet(dataSource), new ResourcelessTransactionManager())
                 .build();

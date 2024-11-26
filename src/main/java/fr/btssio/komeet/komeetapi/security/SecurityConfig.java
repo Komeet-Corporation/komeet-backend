@@ -1,4 +1,4 @@
-package fr.btssio.komeet.komeetapi.config;
+package fr.btssio.komeet.komeetapi.security;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
@@ -27,15 +27,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user/verify").permitAll()
                         .requestMatchers(HttpMethod.GET, "/room").permitAll()
                         .requestMatchers(HttpMethod.GET, "/role/user").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name()))
+                        .requestMatchers(HttpMethod.GET, "/user/{email}").hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/user/favorite").hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/company/{email}").hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name(), RoleEnum.SUPER_ADMIN.name()))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
-    }
-
-    public enum Role {
-        UNKNOWN, USER, ADMIN, SUPER_ADMIN
     }
 }

@@ -13,19 +13,19 @@ public class EtlJob {
 
     public static final String JOB_NAME = "komeetEtlJob";
 
-    private static final String DELETE_TEMP_FILE_STEP = "deleteTempFileStep";
-    private static final String SAVE_ROLE_TABLE_STEP = "saveRoleTableStep";
-    private static final String SAVE_EQUIPMENT_TABLE_STEP = "saveEquipmentTableStep";
-    private static final String SAVE_IMAGE_TABLE_STEP = "saveImageTableStep";
-    private static final String SAVE_COMPANY_TABLE_STEP = "saveCompanyTableStep";
-    private static final String SAVE_ROOM_TABLE_STEP = "saveRoomTableStep";
-    private static final String SAVE_USER_TABLE_STEP = "saveUserTableStep";
-    private static final String SAVE_EQUIP_TABLE_STEP = "saveEquipTableStep";
-    private static final String SAVE_FAVORITE_TABLE_STEP = "saveFavoriteTableStep";
-    private static final String WRITE_RESTORE_FILE_STEP = "writeRestoreFileStep";
-    private static final String ZIP_AND_SAVE_STEP = "zipAndSaveStep";
-    private static final String DELETE_OLD_ZIP_STEP = "deleteOldZipStep";
-    private static final String PURGE_JOB_TABLE_STEP = "purgeJobTableStep";
+    public static final String DELETE_TEMP_FILE_STEP = "deleteTempFileStep";
+    public static final String SAVE_ROLE_TABLE_STEP = "saveRoleTableStep";
+    public static final String SAVE_EQUIPMENT_TABLE_STEP = "saveEquipmentTableStep";
+    public static final String SAVE_IMAGE_TABLE_STEP = "saveImageTableStep";
+    public static final String SAVE_COMPANY_TABLE_STEP = "saveCompanyTableStep";
+    public static final String SAVE_ROOM_TABLE_STEP = "saveRoomTableStep";
+    public static final String SAVE_USER_TABLE_STEP = "saveUserTableStep";
+    public static final String SAVE_EQUIP_TABLE_STEP = "saveEquipTableStep";
+    public static final String SAVE_FAVORITE_TABLE_STEP = "saveFavoriteTableStep";
+    public static final String WRITE_RESTORE_FILE_STEP = "writeRestoreFileStep";
+    public static final String ZIP_AND_SAVE_STEP = "zipAndSaveStep";
+    public static final String DELETE_OLD_ZIP_STEP = "deleteOldZipStep";
+    public static final String PURGE_JOB_TABLE_STEP = "purgeJobTableStep";
 
     private final JobBuilder jobBuilder;
 

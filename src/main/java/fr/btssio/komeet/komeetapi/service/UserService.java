@@ -1,6 +1,5 @@
 package fr.btssio.komeet.komeetapi.service;
 
-import fr.btssio.komeet.komeetapi.config.SecurityConfig;
 import fr.btssio.komeet.komeetapi.domain.data.Role;
 import fr.btssio.komeet.komeetapi.domain.data.User;
 import fr.btssio.komeet.komeetapi.domain.dto.UserDto;
@@ -9,6 +8,7 @@ import fr.btssio.komeet.komeetapi.domain.mapper.UserMapper;
 import fr.btssio.komeet.komeetapi.repository.RoleRepository;
 import fr.btssio.komeet.komeetapi.repository.RoomRepository;
 import fr.btssio.komeet.komeetapi.repository.UserRepository;
+import fr.btssio.komeet.komeetapi.security.UserDetailsUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -81,22 +79,8 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> optional = userRepository.findById(email);
-        if (optional.isEmpty()) {
-            throw new UsernameNotFoundException("User doesn't exist : " + email);
-        }
-        User user = optional.get();
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles(getMaxRole(user.getAuthorities()))
-                .build();
-    }
-
-    private String getMaxRole(@NotNull Collection<Role> roles) {
-        return roles.stream()
-                .max(Comparator.comparing(Role::getLevel))
-                .map(Role::getAuthority)
-                .orElse(SecurityConfig.Role.UNKNOWN.name());
+        User user = userRepository.findById(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist : " + email));
+        return UserDetailsUtils.of(user.getEmail(), user.getPassword(), user.getRole().getAuthority());
     }
 }

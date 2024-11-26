@@ -1,6 +1,7 @@
 package fr.btssio.komeet.komeetapi.etl.step;
 
 import fr.btssio.komeet.komeetapi.domain.data.*;
+import fr.btssio.komeet.komeetapi.etl.job.EtlJob;
 import fr.btssio.komeet.komeetapi.etl.processor.*;
 import fr.btssio.komeet.komeetapi.repository.*;
 import fr.btssio.komeet.komeetapi.service.PathService;
@@ -26,6 +27,7 @@ import java.util.Collections;
 public class SaveTableStep {
 
     private static final String EMAIL = "email";
+    private static final String ID = "id";
 
     private final PathService pathService;
     private final JobRepository jobRepository;
@@ -37,9 +39,9 @@ public class SaveTableStep {
 
     @Bean
     public Step saveRoleTableStep(RoleRepository repository) {
-        RepositoryItemReader<Role> itemReader = itemReader(repository, "roleItemReader", "id");
+        RepositoryItemReader<Role> itemReader = itemReader(repository, "roleItemReader", ID);
         FlatFileItemWriter<String> itemWriter = itemWriter("1roles.sql", "roleItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveRoleTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_ROLE_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Role, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -52,7 +54,7 @@ public class SaveTableStep {
     public Step saveCompanyTableStep(CompanyRepository repository) {
         RepositoryItemReader<Company> itemReader = itemReader(repository, "companyItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("2companies.sql", "companyItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveCompanyTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_COMPANY_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Company, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -63,9 +65,9 @@ public class SaveTableStep {
 
     @Bean
     public Step saveRoomTableStep(RoomRepository repository) {
-        RepositoryItemReader<Room> itemReader = itemReader(repository, "roomItemReader", "id");
+        RepositoryItemReader<Room> itemReader = itemReader(repository, "roomItemReader", ID);
         FlatFileItemWriter<String> itemWriter = itemWriter("3rooms.sql", "roomItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveRoomTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_ROOM_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Room, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -76,9 +78,9 @@ public class SaveTableStep {
 
     @Bean
     public Step saveEquipmentTableStep(EquipmentRepository repository) {
-        RepositoryItemReader<Equipment> itemReader = itemReader(repository, "equipmentItemReader", "id");
+        RepositoryItemReader<Equipment> itemReader = itemReader(repository, "equipmentItemReader", ID);
         FlatFileItemWriter<String> itemWriter = itemWriter("4equipments.sql", "equipmentItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveEquipmentTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_EQUIPMENT_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Equipment, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -89,9 +91,9 @@ public class SaveTableStep {
 
     @Bean
     public Step saveEquipTableStep(RoomRepository repository) {
-        RepositoryItemReader<Room> itemReader = itemReader(repository, "equipItemReader", "id");
+        RepositoryItemReader<Room> itemReader = itemReader(repository, "equipItemReader", ID);
         FlatFileItemWriter<String> itemWriter = itemWriter("5equips.sql", "equipItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveEquipTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_EQUIP_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Room, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -102,9 +104,9 @@ public class SaveTableStep {
 
     @Bean
     public Step saveImageTableStep(ImageRepository repository) {
-        RepositoryItemReader<Image> itemReader = itemReader(repository, "imageItemReader", "id");
+        RepositoryItemReader<Image> itemReader = itemReader(repository, "imageItemReader", ID);
         FlatFileItemWriter<String> itemWriter = itemWriter("6images.sql", "imageItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveImageTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_IMAGE_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<Image, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -117,7 +119,7 @@ public class SaveTableStep {
     public Step saveUserTableStep(UserRepository repository) {
         RepositoryItemReader<User> itemReader = itemReader(repository, "userItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("7users.sql", "userItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveUserTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_USER_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<User, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
@@ -130,7 +132,7 @@ public class SaveTableStep {
     public Step saveFavoriteTableStep(UserRepository repository) {
         RepositoryItemReader<User> itemReader = itemReader(repository, "favoriteItemReader", EMAIL);
         FlatFileItemWriter<String> itemWriter = itemWriter("8favorites.sql", "favoriteItemWriter");
-        StepBuilder stepBuilder = new StepBuilder("saveFavoriteTableStep", jobRepository);
+        StepBuilder stepBuilder = new StepBuilder(EtlJob.SAVE_FAVORITE_TABLE_STEP, jobRepository);
         return stepBuilder
                 .<User, String>chunk(1, new ResourcelessTransactionManager())
                 .reader(itemReader)
