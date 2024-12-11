@@ -5,10 +5,10 @@
     <parent>
         <groupId>fr.btssio.komeet</groupId>
         <artifactId>komeet-backend</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <artifactId>komeet-etl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <name>komeet-etl</name>
     <description>komeet-etl</description>

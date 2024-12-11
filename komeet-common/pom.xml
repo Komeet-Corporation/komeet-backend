@@ -6,11 +6,11 @@
     <parent>
         <groupId>fr.btssio.komeet</groupId>
         <artifactId>komeet-backend</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <artifactId>komeet-common</artifactId>
     <properties>
-        <komeet.version>1.0.0-SNAPSHOT</komeet.version>
+        <komeet.version>1.0.0</komeet.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
