@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>komeet-etl</artifactId>
-    <version>${parent.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>komeet-etl</name>
     <description>komeet-etl</description>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>fr.btssio.komeet</groupId>
             <artifactId>komeet-common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
