@@ -31,7 +31,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
       - name: Pull maven and run
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.REPO_DIR }}/komeet-api
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.REPO_DIR }}/komeet-backend
           && git fetch -p
           && git checkout ${{ secrets.MAIN_BRANCH }}
           && git pull origin ${{ secrets.MAIN_BRANCH }}
@@ -51,6 +51,9 @@ jobs:
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
       - name: copy
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}
-          && rm ${{ secrets.APP_NAME }} && cp ${{ secrets.REPO_DIR }}/komeet-api/target/${{ secrets.APP_NAME }} ${{ secrets.APP_NAME }}"
+          && rm komeet-api.war
+          && rm komeet-etl.war
+          && cp ${{ secrets.REPO_DIR }}/komeet-backend/komeet-api/target/komeet-api.war komeet-api.war
+          && cp ${{ secrets.REPO_DIR }}/komeet-backend/komeet-etl/target/komeet-etl.war komeet-etl.war"
       - name: Clean
         run: rm -rf ~/.ssh
