@@ -10,11 +10,14 @@
     </parent>
     <groupId>fr.btssio.komeet</groupId>
     <artifactId>komeet-backend</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>komeet-backend</name>
     <packaging>pom</packaging>
     <description>komeet-backend</description>
     <properties>
+        <sonar.projectKey>fr.btssio.komeet:komeet-backend:${project.version}</sonar.projectKey>
+        <sonar.organization>komeet-corporation</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <spring.boot.version>3.4.0</spring.boot.version>
         <java.version>21</java.version>
     </properties>
@@ -122,6 +125,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>5.0.0.4389</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
