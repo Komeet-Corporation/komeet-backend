@@ -1,14 +1,14 @@
 package fr.btssio.komeet.api.service;
 
-import fr.btssio.komeet.common.data.Role;
-import fr.btssio.komeet.common.data.User;
 import fr.btssio.komeet.api.dto.UserDto;
 import fr.btssio.komeet.api.exception.ConflictException;
 import fr.btssio.komeet.api.mapper.UserMapper;
+import fr.btssio.komeet.api.security.UserDetailsUtils;
+import fr.btssio.komeet.common.data.Role;
+import fr.btssio.komeet.common.data.User;
 import fr.btssio.komeet.common.repository.RoleRepository;
 import fr.btssio.komeet.common.repository.RoomRepository;
 import fr.btssio.komeet.common.repository.UserRepository;
-import fr.btssio.komeet.api.security.UserDetailsUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     public String favorite(String uuidUser, String uuidRoom) throws ConflictException {
-        if (!userRepository.existsByUuid(uuidUser) && !roomRepository.existsByUuid(uuidRoom))
+        if (!userRepository.existsByUuid(uuidUser) || !roomRepository.existsByUuid(uuidRoom))
             throw new ConflictException("User or Room doesn't exist");
         String emailUser = userRepository.findEmailByUuid(uuidUser);
         Long idRoom = roomRepository.findIdByUuid(uuidRoom);
