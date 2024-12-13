@@ -10,11 +10,18 @@
     </parent>
     <groupId>fr.btssio.komeet</groupId>
     <artifactId>komeet-backend</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>komeet-backend</name>
     <packaging>pom</packaging>
     <description>komeet-backend</description>
     <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ../komeet-report/target/site/jacoco-aggregate/jacoco.xml,
+            komeet-report/target/site/jacoco-aggregate/jacoco.xml,
+            target/site/jacoco-aggregate/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.organization>komeet-corporation</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <spring.boot.version>3.4.0</spring.boot.version>
         <java.version>21</java.version>
     </properties>
@@ -22,6 +29,7 @@
         <module>komeet-api</module>
         <module>komeet-etl</module>
         <module>komeet-common</module>
+        <module>komeet-report</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -112,6 +120,18 @@
             <dependency>
                 <groupId>fr.btssio.komeet</groupId>
                 <artifactId>komeet-commom</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>fr.btssio.komeet</groupId>
+                <artifactId>komeet-api</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>fr.btssio.komeet</groupId>
+                <artifactId>komeet-etl</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
