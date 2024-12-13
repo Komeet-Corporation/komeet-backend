@@ -8,7 +8,6 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>komeet-api</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>komeet-api</name>
     <description>komeet-api</description>
