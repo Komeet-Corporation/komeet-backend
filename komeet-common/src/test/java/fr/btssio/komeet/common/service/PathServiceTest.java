@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 
 class PathServiceTest {
 
-
     private final PathService pathService = spy(new PathService());
 
     @Test
