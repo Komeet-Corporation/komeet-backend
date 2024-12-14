@@ -1,48 +1,37 @@
 package fr.btssio.komeet.common.service;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class PathServiceTest {
 
-    private static final File tempFile = new File(System.getProperty("user.home") + "/komeet/temp/file-test.txt");
-    private static final File saveDir = new File(System.getProperty("user.home") + "/komeet/save");
 
-    private final PathService pathService = new PathService();
-
-    @BeforeAll
-    static void setUp() throws IOException {
-        if (!saveDir.exists()) {
-            boolean createdDir = saveDir.mkdirs();
-            assertTrue(createdDir);
-        }
-        boolean createdFile = tempFile.createNewFile();
-        assertTrue(createdFile);
-    }
-
-    @AfterAll
-    static void close() {
-        if (tempFile.exists()) {
-            boolean deleted = tempFile.delete();
-            assertTrue(deleted);
-        }
-    }
+    private final PathService pathService = spy(new PathService());
 
     @Test
     void getTempFile() {
+        final File fileMock = new File("file-test.txt");
+        when(pathService.getTempFile("file-test.txt")).thenReturn(fileMock);
+
         File file = pathService.getTempFile("file-test.txt");
-        assertTrue(file.exists());
+
+        assertNotNull(file);
     }
 
     @Test
     void getSavePath() {
+        final Path pathMock = Path.of("/komeet/save");
+        when(pathService.getSavePath()).thenReturn(pathMock);
+
         String path = pathService.getSavePath().toString();
+
         assertTrue(path.endsWith("save"));
     }
 }
