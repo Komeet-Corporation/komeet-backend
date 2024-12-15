@@ -28,7 +28,7 @@ public class WriteRestoreFileTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) throws IOException {
 
-        final File restoreFile = new File(pathService.getTempPath() + File.separator + RESTORE_FILENAME);
+        final File restoreFile = pathService.getTempFile(RESTORE_FILENAME);
 
         Optional<File[]> optional = Optional.ofNullable(pathService.getTempPath().toFile().listFiles());
         if (optional.isPresent()) {
