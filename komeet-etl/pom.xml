@@ -8,7 +8,6 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>komeet-etl</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>komeet-etl</name>
     <description>komeet-etl</description>

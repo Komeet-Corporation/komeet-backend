@@ -25,6 +25,7 @@ class KomeetEtlApplicationTests {
     void contextLoads() {
         List<User> users = createUsers();
         when(userRepository.findAll()).thenReturn(users);
+        KomeetEtlApplication.main(new String[0]);
     }
 
     private @NotNull @Unmodifiable List<User> createUsers() {

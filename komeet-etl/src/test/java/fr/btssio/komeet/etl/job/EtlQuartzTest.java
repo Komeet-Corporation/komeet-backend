@@ -62,6 +62,21 @@ class EtlQuartzTest {
     }
 
     @Test
+    void etlRunnableError() throws NoSuchJobException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        Future<?> future = mock(Future.class);
+        quartz.setJobLauncher(jobLauncher);
+        quartz.setJobLocator(jobLocator);
+        executors.when(Executors::newSingleThreadExecutor).thenReturn(executorService);
+        doReturn(future).when(executorService).submit(any(Runnable.class));
+        when(jobLocator.getJob(anyString())).thenReturn(job);
+        when(jobLauncher.run(any(Job.class), any(JobParameters.class))).thenThrow(JobInstanceAlreadyCompleteException.class);
+
+        quartz.executeInternal(createJobExecutionContext());
+
+        verify(executorService, times(1)).submit(any(Runnable.class));
+    }
+
+    @Test
     void getJobLocator() {
         quartz.setJobLocator(jobLocator);
 

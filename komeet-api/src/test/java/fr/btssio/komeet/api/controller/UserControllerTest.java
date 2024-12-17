@@ -2,15 +2,17 @@ package fr.btssio.komeet.api.controller;
 
 import fr.btssio.komeet.api.dto.UserDto;
 import fr.btssio.komeet.api.mapper.*;
+import fr.btssio.komeet.api.service.UserService;
 import fr.btssio.komeet.common.data.*;
 import fr.btssio.komeet.common.repository.RoleRepository;
 import fr.btssio.komeet.common.repository.RoomRepository;
 import fr.btssio.komeet.common.repository.UserRepository;
-import fr.btssio.komeet.api.service.UserService;
 import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.opentest4j.TestAbortedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -128,10 +130,11 @@ class UserControllerTest {
         assertEquals(HttpStatus.OK, add200.getStatusCode());
     }
 
-    @Test
-    void favoriteConflictException() {
-        when(userRepository.existsByUuid(anyString())).thenReturn(false);
-        when(roomRepository.existsByUuid(anyString())).thenReturn(false);
+    @ParameterizedTest
+    @CsvSource(value = {"true,false", "false,true"})
+    void favoriteConflictException(boolean userBoolean, boolean roomBoolean) {
+        when(userRepository.existsByUuid(anyString())).thenReturn(userBoolean);
+        when(roomRepository.existsByUuid(anyString())).thenReturn(roomBoolean);
 
         ResponseEntity<Void> code409 = userController.favorite(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
@@ -159,6 +162,15 @@ class UserControllerTest {
     @Test
     void verifyConflictException() {
         when(userRepository.findById("test@test.test")).thenReturn(createUser());
+
+        ResponseEntity<UserDto> response = userController.verify("test@test.com", "test");
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    void verifyConflictException2() {
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         ResponseEntity<UserDto> response = userController.verify("test@test.com", "test");
 

@@ -1,5 +1,6 @@
 package fr.btssio.komeet.api.service;
 
+import fr.btssio.komeet.api.exception.ConflictException;
 import fr.btssio.komeet.api.mapper.*;
 import fr.btssio.komeet.common.data.Role;
 import fr.btssio.komeet.common.data.User;
@@ -35,13 +36,13 @@ class UserServiceTest {
     private final UserService userService = new UserService(userRepository, userMapper, roleRepository, roomRepository, encoder);
 
     @Test
-    void loadUserByUsername_exception() {
+    void loadUserByUsernameException() {
         when(userRepository.findById(anyString())).thenReturn(Optional.empty());
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("username"));
     }
 
     @Test
-    void loadUserByUsername_one() {
+    void loadUserByUsernameOne() {
         Optional<User> user = createUser();
         when(userRepository.findById(anyString())).thenReturn(user);
 
@@ -50,10 +51,18 @@ class UserServiceTest {
         assertEquals("ROLE_USER", userDetails.getAuthorities().iterator().next().getAuthority());
     }
 
+    @Test
+    void verifyPasswordNotMatch() {
+        Optional<User> user = createUser();
+        when(userRepository.findById(anyString())).thenReturn(user);
+
+        assertThrows(ConflictException.class, () -> userService.verify("test@test.test", "password"));
+    }
+
     private @NotNull Optional<User> createUser() {
         User user = mock(User.class);
         when(user.getEmail()).thenReturn("test@test.test");
-        when(user.getPassword()).thenReturn("test");
+        when(user.getPassword()).thenReturn(encoder.encode("test"));
         when(user.getRole()).thenReturn(createRole());
         return Optional.of(user);
     }
