@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.3</version>
         <relativePath/>
     </parent>
     <groupId>fr.btssio.komeet</groupId>
     <artifactId>komeet-backend</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>komeet-backend</name>
     <packaging>pom</packaging>
     <description>komeet-backend</description>
