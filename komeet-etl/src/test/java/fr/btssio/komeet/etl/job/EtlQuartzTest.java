@@ -51,7 +51,7 @@ class EtlQuartzTest {
         Future<?> future = mock(Future.class);
         quartz.setJobLauncher(jobLauncher);
         quartz.setJobLocator(jobLocator);
-        executors.when(Executors::newSingleThreadExecutor).thenReturn(executorService);
+        executors.when(Executors::newVirtualThreadPerTaskExecutor).thenReturn(executorService);
         doReturn(future).when(executorService).submit(any(Runnable.class));
         when(jobLauncher.run(any(Job.class), any(JobParameters.class))).thenReturn(jobExecution);
         when(jobLocator.getJob(anyString())).thenReturn(job);
@@ -66,7 +66,7 @@ class EtlQuartzTest {
         Future<?> future = mock(Future.class);
         quartz.setJobLauncher(jobLauncher);
         quartz.setJobLocator(jobLocator);
-        executors.when(Executors::newSingleThreadExecutor).thenReturn(executorService);
+        executors.when(Executors::newVirtualThreadPerTaskExecutor).thenReturn(executorService);
         doReturn(future).when(executorService).submit(any(Runnable.class));
         when(jobLocator.getJob(anyString())).thenReturn(job);
         when(jobLauncher.run(any(Job.class), any(JobParameters.class))).thenThrow(JobInstanceAlreadyCompleteException.class);
