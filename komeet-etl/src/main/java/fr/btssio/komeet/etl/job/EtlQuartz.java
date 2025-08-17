@@ -34,7 +34,7 @@ public class EtlQuartz extends QuartzJobBean {
     @Override
     protected void executeInternal(@NotNull JobExecutionContext context) {
         Runnable etl = createEtlRunnable(context);
-        try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
+        try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
             executorService.submit(etl);
         }
     }
