@@ -22,7 +22,7 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.organization>komeet-corporation</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <spring.boot.version>3.4.0</spring.boot.version>
+        <spring.boot.version>3.5.3</spring.boot.version>
         <java.version>21</java.version>
     </properties>
     <modules>
@@ -51,6 +51,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
