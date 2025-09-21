@@ -1,10 +1,10 @@
 package fr.btssio.komeet.etl.step;
 
-import fr.btssio.komeet.etl.config.EtlConfig;
+import fr.btssio.komeet.common.service.PathService;
+import fr.btssio.komeet.etl.config.EtlConfiguration;
 import fr.btssio.komeet.etl.job.EtlJob;
 import fr.btssio.komeet.etl.tasklet.DeleteOldZipTasklet;
 import fr.btssio.komeet.etl.tasklet.ZipAndSaveTasklet;
-import fr.btssio.komeet.common.service.PathService;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ZipStep {
 
-    private final EtlConfig etlConfig;
+    private final EtlConfiguration etlConfig;
     private final PathService pathService;
 
-    public ZipStep(EtlConfig etlConfig, PathService pathService) {
+    public ZipStep(EtlConfiguration etlConfig, PathService pathService) {
         this.etlConfig = etlConfig;
         this.pathService = pathService;
     }

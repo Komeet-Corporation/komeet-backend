@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDetailsUtils {
 
     private UserDetailsUtils() {
-        /// No property(ies) needed
-        /// If you need to add more, delete this comment
+        // No property(ies) needed
+        // If you need to add more, delete this comment
     }
 
     @Contract("_, _, _ -> new")

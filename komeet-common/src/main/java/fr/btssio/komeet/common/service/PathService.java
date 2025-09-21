@@ -15,8 +15,8 @@ public class PathService {
     private final String userHome = System.getProperty(USER_HOME_LABEL);
 
     public PathService() {
-        /// No property(ies) needed
-        /// If you need to add more, delete this comment
+        // No property(ies) needed
+        // If you need to add more, delete this comment
     }
 
     public Path getTempPath() {

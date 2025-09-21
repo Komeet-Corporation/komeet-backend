@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Getter
 @Configuration
-public class EtlConfig {
+public class EtlConfiguration {
 
     private static final String JOB_LAUNCHER = "jobLauncher";
     private static final String JOB_NAME = "jobName";
@@ -33,7 +33,7 @@ public class EtlConfig {
     @Value("${etl.job.cron}")
     private String jobCron;
 
-    public EtlConfig(JobRepository jobRepository, JobLauncher jobLauncher, JobRegistry jobRegistry) {
+    public EtlConfiguration(JobRepository jobRepository, JobLauncher jobLauncher, JobRegistry jobRegistry) {
         this.jobRepository = jobRepository;
         this.jobLauncher = jobLauncher;
         this.jobRegistry = jobRegistry;

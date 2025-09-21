@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class PurgeJobTableTasklet implements Tasklet {
+public record PurgeJobTableTasklet(DataSource dataSource) implements Tasklet {
 
     private static final String SCRIPT_STEP_EXECUTION = "DELETE FROM BATCH_STEP_EXECUTION WHERE JOB_EXECUTION_ID != %d";
     private static final String SCRIPT_JOB_EXECUTION_PARAMS = "DELETE FROM BATCH_JOB_EXECUTION_PARAMS WHERE JOB_EXECUTION_ID != %d";
@@ -22,12 +22,6 @@ public class PurgeJobTableTasklet implements Tasklet {
     private static final String SCRIPT_JOB_INSTANCE = "DELETE FROM BATCH_JOB_INSTANCE WHERE JOB_INSTANCE_ID != %d";
     private static final String SCRIPT_STEP_EXECUTION_CONTEXT = "DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID IN " +
             "(SELECT STEP_EXECUTION_ID FROM BATCH_STEP_EXECUTION WHERE JOB_EXECUTION_ID != %d);";
-
-    private final DataSource dataSource;
-
-    public PurgeJobTableTasklet(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) throws SQLException {

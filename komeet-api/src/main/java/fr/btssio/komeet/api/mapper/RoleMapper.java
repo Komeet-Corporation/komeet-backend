@@ -11,8 +11,8 @@ import java.util.UUID;
 public class RoleMapper {
 
     public RoleMapper() {
-        /// No property(ies) needed
-        /// If you need to add more, delete this comment
+        // No property(ies) needed
+        // If you need to add more, delete this comment
     }
 
     public RoleDto toDto(@NotNull Role role) {
