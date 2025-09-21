@@ -1,6 +1,6 @@
 package fr.btssio.komeet.etl.step;
 
-import fr.btssio.komeet.etl.config.EtlConfig;
+import fr.btssio.komeet.etl.config.EtlConfiguration;
 import fr.btssio.komeet.etl.job.EtlJob;
 import fr.btssio.komeet.etl.tasklet.PurgeJobTableTasklet;
 import org.springframework.batch.core.Step;
@@ -15,9 +15,9 @@ import javax.sql.DataSource;
 public class JobTableStep {
 
     private final DataSource dataSource;
-    private final EtlConfig etlConfig;
+    private final EtlConfiguration etlConfig;
 
-    public JobTableStep(EtlConfig etlConfig, DataSource dataSource) {
+    public JobTableStep(EtlConfiguration etlConfig, DataSource dataSource) {
         this.etlConfig = etlConfig;
         this.dataSource = dataSource;
     }
